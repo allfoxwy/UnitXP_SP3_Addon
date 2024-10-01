@@ -13,7 +13,7 @@ local function UnitXP_SP3_Print(msg)
 end
 
 function UnitXP_SP3_OnLoad()
-    this:RegisterEvent("ADDON_LOADED");
+    xpsp3Frame:RegisterEvent("ADDON_LOADED");
 end
 
 local function UnitXP_SP3_NotifyOS()
@@ -41,10 +41,10 @@ local function UnitXP_SP3_reloadConfig()
 
     for ev, v in pairs(UnitXP_SP3_Addon["notifyOS"]) do
         if (v == true) then
-            this:RegisterEvent(ev);
+            xpsp3Frame:RegisterEvent(ev);
             xpsp3_checkButton_notify:SetChecked(true);
         else
-            this:UnregisterEvent(ev);
+            xpsp3Frame:UnregisterEvent(ev);
             xpsp3_checkButton_notify:SetChecked(false);
         end
     end
@@ -58,13 +58,21 @@ function UnitXP_SP3_UI_OnClick(widget)
     
     if (string.find(widget:GetName(), "_checkButton_")) then
         if (string.find(widget:GetName(), "_modernNameplate")) then
-            UnitXP_SP3_Addon["modernNameplateDistance"] = widget:GetChecked();
+            if(widget:GetChecked()) then
+                UnitXP_SP3_Addon["modernNameplateDistance"] = true;
+            else
+                UnitXP_SP3_Addon["modernNameplateDistance"] = false;
+            end
         end
 
         if (string.find(widget:GetName(), "_notify")) then
             for ev, v in pairs(UnitXP_SP3_Addon["notifyOS"]) do
-                UnitXP_SP3_Addon["notifyOS"][ev] = widget:GetChecked();
-            end 
+                if(widget:GetChecked()) then
+                    UnitXP_SP3_Addon["notifyOS"][ev] = true;
+                else
+                    UnitXP_SP3_Addon["notifyOS"][ev] = false;
+                end
+            end
         end
     end
 
@@ -73,7 +81,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 4;
+        local dataVersion = 5;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
