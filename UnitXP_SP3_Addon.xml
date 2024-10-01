@@ -3,15 +3,133 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
   <!-- $Id$ -->
   
-  <!-- Localization -->
-  <Script file="Localization.lua"/>
-  
-  <!-- My Script -->
+  <!-- Script -->
   <Script file="UnitXP_SP3_Addon.lua"/>
 
-  <!-- My AddOn Frames -->
-  <GameTooltip name="xpsp3tooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="GameTooltipTemplate"/>
-  <Frame name="xpsp3Frame" parent="UIParent">
+  <!-- Frames -->
+  <Frame name="xpsp3Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
+  	<TitleRegion setAllPoints="true"/>
+    <Size>
+			<AbsDimension x="250" y="150"/>
+		</Size>
+    <Anchors>
+			<Anchor point="CENTER" relativeTo="UIParent" />
+		</Anchors>  
+    <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+
+    
+
+    <Layers>
+			<Layer level="ARTWORK">
+				<Texture name="xpsp3_title_texture" file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="320" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString inherits="GameFontNormal" text="UnitXP Service Pack 3">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="xpsp3_title_texture">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+      </Layer>
+    </Layers>
+
+    <Frames>
+      <Button name="xpsp3_button_close" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Close">
+        <Size>
+			    <AbsDimension x="100" y="24"/>
+		    </Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-15" y="15"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+            PlaySound("igMainMenuContinue");
+						xpsp3Frame:Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+
+      <CheckButton name="xpsp3_checkButton_modernNameplate" inherits="UICheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="24" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+          <OnLoad>
+            getglobal(this:GetName().."Text"):SetText("Hide nameplates behind wall");
+          </OnLoad>
+					<OnClick>
+            PlaySound("igMainMenuContinue");
+						UnitXP_SP3_UI_OnClick(this);
+					</OnClick>
+          <OnEnter>
+            xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            xpsp3tooltip:SetText("Nameplates would also check camera's line of sight in addition to distance");
+            xpsp3tooltip:Show()
+          </OnEnter>
+          <OnLeave>
+            xpsp3tooltip:Hide()
+          </OnLeave>
+				</Scripts>
+			</CheckButton>
+
+      <CheckButton name="xpsp3_checkButton_notify" inherits="UICheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="24" y="-60"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+          <OnLoad>
+            getglobal(this:GetName().."Text"):SetText("Taskbar notification");
+          </OnLoad>
+					<OnClick>
+            PlaySound("igMainMenuContinue");
+						UnitXP_SP3_UI_OnClick(this);
+					</OnClick>
+          <OnEnter>
+            xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            xpsp3tooltip:SetText("Flash operating system's taskbar icon when game is in background but require attention");
+            xpsp3tooltip:Show()
+          </OnEnter>
+          <OnLeave>
+            xpsp3tooltip:Hide()
+          </OnLeave>
+				</Scripts>
+			</CheckButton>
+    </Frames>
+
     <Scripts>
       <OnLoad>
         UnitXP_SP3_OnLoad();
@@ -21,4 +139,17 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
       </OnEvent>
     </Scripts>
   </Frame>
+
+  <GameTooltip name="xpsp3tooltip" frameStrata="TOOLTIP" hidden="true" parent="xpsp3Frame" inherits="GameTooltipTemplate" />
+
+  <!-- Game Menu Button -->
+	<Button name="GameMenuButtonXPSP3" parent = "GameMenuFrame" inherits="GameMenuButtonTemplate" text="UnitXP SP3">
+		<Scripts>
+			<OnClick>
+				PlaySound("igMainMenuContinue");
+				HideUIPanel(GameMenuFrame);
+				xpsp3Frame:Show();
+			</OnClick>
+		</Scripts>
+	</Button>
 </Ui>

@@ -1,7 +1,7 @@
 ## Interface: 12000
-## Title: UnitXP Service Pack 3 Lua Addon
-## Notes: Menu to control UnitXP_SP3
-## Author: Konaka Masaru
+## Title: UnitXP SP3 Lua Addon
+## Notes: Menu to control UnitXP SP3 mod
+## Author: allfox
 ## DefaultState: enabled
 ## OptionalDeps: none
 ## SavedVariables: UnitXP_SP3_Addon
