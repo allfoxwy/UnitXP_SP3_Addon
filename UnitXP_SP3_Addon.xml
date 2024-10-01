@@ -1,0 +1,24 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"  
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+  <!-- $Id$ -->
+  
+  <!-- Localization -->
+  <Script file="Localization.lua"/>
+  
+  <!-- My Script -->
+  <Script file="UnitXP_SP3_Addon.lua"/>
+
+  <!-- My AddOn Frames -->
+  <GameTooltip name="xpsp3tooltip" frameStrata="TOOLTIP" hidden="true" parent="UIParent" inherits="GameTooltipTemplate"/>
+  <Frame name="xpsp3Frame" parent="UIParent">
+    <Scripts>
+      <OnLoad>
+        UnitXP_SP3_OnLoad();
+      </OnLoad>
+      <OnEvent>
+        UnitXP_SP3_OnEvent(event);
+      </OnEvent>
+    </Scripts>
+  </Frame>
+</Ui>
