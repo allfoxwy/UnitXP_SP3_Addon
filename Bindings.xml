@@ -1,0 +1,35 @@
+<Bindings>
+
+	<Binding name="UNITXPSP3NEARESTENEMY" header="UNITXPSP3TARGETING">
+		UnitXP("target", "nearestEnemy");
+	</Binding>
+
+	<Binding name="UNITXPSP3WORLDBOSS">
+		UnitXP("target", "worldBoss");
+	</Binding>
+
+	<Binding name="UNITXPSP3NEXTMARKER">
+		UnitXP("target", "nextMarkedEnemyInCycle");
+	</Binding>
+
+	<Binding name="UNITXPSP3PREVIOUSMARKER">
+		UnitXP("target", "previousMarkedEnemyInCycle");
+	</Binding>
+
+	<Binding name="UNITXPSP3NEXTENEMY">
+		UnitXP("target", "nextEnemyInCycle");
+	</Binding>
+
+	<Binding name="UNITXPSP3PREVIOUSENEMY">
+		UnitXP("target", "previousEnemyInCycle");
+	</Binding>
+
+	<Binding name="UNITXPSP3NEXTMELEE">
+		UnitXP("target", "nextEnemyConsideringDistance");
+	</Binding>
+
+	<Binding name="UNITXPSP3PREVIOUSMELEE">
+		UnitXP("target", "previousEnemyConsideringDistance");
+	</Binding>
+
+</Bindings>
