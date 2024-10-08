@@ -109,7 +109,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 7;
+        local dataVersion = 8;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -117,7 +117,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
-            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_ENTER_COMBAT"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_WHISPER"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_RAID_WARNING"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["TRADE_SHOW"] = true;
@@ -128,7 +128,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PARTY_MEMBERS_CHANGED"] = true;
 
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"] = {};
-            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PLAYER_ENTER_COMBAT"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PLAYER_REGEN_DISABLED"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_WHISPER"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_RAID_WARNING"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["TRADE_SHOW"] = false;
@@ -155,6 +155,18 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Print("UnitXP Service Pack 3 is loaded. Press ESC to access it from Main Menu.");
         else
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
+        end
+
+        if (UnitXP_SP3_Addon["notify_flashTaskbarIcon"] ~= nil and
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] == true and
+            UnitAffectingCombat("player")) then
+            UnitXP_SP3_flashTaskbarIcon();
+        end
+
+        if (UnitXP_SP3_Addon["notify_playSystemDefaultSound"] ~= nil and
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PLAYER_REGEN_DISABLED"] == true and
+            UnitAffectingCombat("player")) then
+            UnitXP_SP3_playSystemDefaultSound();
         end
 
         return;
