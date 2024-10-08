@@ -5,6 +5,17 @@
 ]] --
 UnitXP_SP3_Addon = nil; -- It's a SavedVariable, not local
 
+-- Key binding strings
+BINDING_HEADER_UNITXPSP3TARGETING = "UnitXP SP3 Targeting Functions";
+BINDING_NAME_UNITXPSP3NEARESTENEMY = "Nearest Enemy";
+BINDING_NAME_UNITXPSP3WORLDBOSS = "World Boss";
+BINDING_NAME_UNITXPSP3NEXTMARKER = "Next Target Marker";
+BINDING_NAME_UNITXPSP3PREVIOUSMARKER = "Previous Target Marker";
+BINDING_NAME_UNITXPSP3NEXTENEMY = "Next Enemy";
+BINDING_NAME_UNITXPSP3PREVIOUSENEMY = "Previous Enemy";
+BINDING_NAME_UNITXPSP3NEXTMELEE = "Next Enemy Prioritizing Melee";
+BINDING_NAME_UNITXPSP3PREVIOUSMELEE = "Previous Enemy Prioritizing Melee";
+
 local function UnitXP_SP3_Print(msg)
     if (not DEFAULT_CHAT_FRAME) then
         return;
@@ -109,7 +120,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 8;
+        local dataVersion = 9;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
