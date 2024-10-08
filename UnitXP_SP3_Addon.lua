@@ -16,8 +16,12 @@ function UnitXP_SP3_OnLoad()
     xpsp3Frame:RegisterEvent("ADDON_LOADED");
 end
 
-local function UnitXP_SP3_NotifyOS()
+local function UnitXP_SP3_flashTaskbarIcon()
     return pcall(UnitXP, "notify", "taskbarIcon");
+end
+
+local function UnitXP_SP3_playSystemDefaultSound()
+    return pcall(UnitXP, "notify", "systemSound", "SystemDefault");
 end
 
 local function UnitXP_SP3_setTargetingRangeConeFactor(factor)
@@ -39,13 +43,27 @@ local function UnitXP_SP3_reloadConfig()
         xpsp3_checkButton_modernNameplate:SetChecked(false);
     end
 
-    for ev, v in pairs(UnitXP_SP3_Addon["notifyOS"]) do
+    for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
+        xpsp3Frame:UnregisterEvent(ev);
+    end
+    for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
+        xpsp3Frame:UnregisterEvent(ev);
+    end
+
+    for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
         if (v == true) then
             xpsp3Frame:RegisterEvent(ev);
-            xpsp3_checkButton_notify:SetChecked(true);
+            xpsp3_checkButton_notify_flashTaskbarIcon:SetChecked(true);
         else
-            xpsp3Frame:UnregisterEvent(ev);
-            xpsp3_checkButton_notify:SetChecked(false);
+            xpsp3_checkButton_notify_flashTaskbarIcon:SetChecked(false);
+        end
+    end
+    for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
+        if (v == true) then
+            xpsp3Frame:RegisterEvent(ev);
+            xpsp3_checkButton_notify_playSystemDefaultSound:SetChecked(true);
+        else
+            xpsp3_checkButton_notify_playSystemDefaultSound:SetChecked(false);
         end
     end
 
@@ -55,22 +73,32 @@ function UnitXP_SP3_UI_OnClick(widget)
     if (widget == nil or string.find(widget:GetName(), "xpsp3") == nil) then
         return
     end
-    
+
     if (string.find(widget:GetName(), "_checkButton_")) then
         if (string.find(widget:GetName(), "_modernNameplate")) then
-            if(widget:GetChecked()) then
+            if (widget:GetChecked()) then
                 UnitXP_SP3_Addon["modernNameplateDistance"] = true;
             else
                 UnitXP_SP3_Addon["modernNameplateDistance"] = false;
             end
         end
 
-        if (string.find(widget:GetName(), "_notify")) then
-            for ev, v in pairs(UnitXP_SP3_Addon["notifyOS"]) do
-                if(widget:GetChecked()) then
-                    UnitXP_SP3_Addon["notifyOS"][ev] = true;
+        if (string.find(widget:GetName(), "_notify_flashTaskbarIcon")) then
+            for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
+                if (widget:GetChecked()) then
+                    UnitXP_SP3_Addon["notify_flashTaskbarIcon"][ev] = true;
                 else
-                    UnitXP_SP3_Addon["notifyOS"][ev] = false;
+                    UnitXP_SP3_Addon["notify_flashTaskbarIcon"][ev] = false;
+                end
+            end
+        end
+
+        if (string.find(widget:GetName(), "_notify_playSystemDefaultSound")) then
+            for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
+                if (widget:GetChecked()) then
+                    UnitXP_SP3_Addon["notify_playSystemDefaultSound"][ev] = true;
+                else
+                    UnitXP_SP3_Addon["notify_playSystemDefaultSound"][ev] = false;
                 end
             end
         end
@@ -81,21 +109,34 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 5;
+        local dataVersion = 7;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
             UnitXP_SP3_Addon["targetRangeConeFactor"] = 2.2;
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
 
-            UnitXP_SP3_Addon["notifyOS"] = {};
-            UnitXP_SP3_Addon["notifyOS"]["PLAYER_ENTER_COMBAT"] = true;
-            UnitXP_SP3_Addon["notifyOS"]["CHAT_MSG_WHISPER"] = true;
-            UnitXP_SP3_Addon["notifyOS"]["CHAT_MSG_RAID_WARNING"] = true;
-            UnitXP_SP3_Addon["notifyOS"]["TRADE_SHOW"] = true;
-            UnitXP_SP3_Addon["notifyOS"]["PARTY_INVITE_REQUEST"] = true;
-            UnitXP_SP3_Addon["notifyOS"]["READY_CHECK"] = true;
-            UnitXP_SP3_Addon["notifyOS"]["GUILD_INVITE_REQUEST"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_ENTER_COMBAT"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_WHISPER"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_RAID_WARNING"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["TRADE_SHOW"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PARTY_INVITE_REQUEST"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["READY_CHECK"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["GUILD_INVITE_REQUEST"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["UPDATE_BATTLEFIELD_STATUS"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PARTY_MEMBERS_CHANGED"] = true;
+
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"] = {};
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PLAYER_ENTER_COMBAT"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_WHISPER"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_RAID_WARNING"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["TRADE_SHOW"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PARTY_INVITE_REQUEST"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["READY_CHECK"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["GUILD_INVITE_REQUEST"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["UPDATE_BATTLEFIELD_STATUS"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PARTY_MEMBERS_CHANGED"] = false;
         end
 
         local test = false;
@@ -116,11 +157,59 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
         end
 
-    elseif (UnitXP_SP3_Addon ~= nil and UnitXP_SP3_Addon["notifyOS"] ~= nil) then
-        for ev, v in pairs(UnitXP_SP3_Addon["notifyOS"]) do
+        return;
+    end
+
+    if (UnitXP_SP3_Addon ~= nil and UnitXP_SP3_Addon["notify_flashTaskbarIcon"] ~= nil) then
+        for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
             if (event == ev and v == true) then
-                UnitXP_SP3_NotifyOS();
-                break
+                if (event == "PARTY_MEMBERS_CHANGED") then
+                    -- Party full
+                    if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4) then
+                        UnitXP_SP3_flashTaskbarIcon();
+                        break
+                    end
+                elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
+                    local i, s;
+                    for i = 1, MAX_BATTLEFIELD_QUEUES do
+                        s = GetBattlefieldStatus(i);
+                        -- Battlefield is ready
+                        if (s == "confirm") then
+                            UnitXP_SP3_flashTaskbarIcon();
+                            break
+                        end
+                    end
+                else
+                    UnitXP_SP3_flashTaskbarIcon();
+                    break
+                end
+            end
+        end
+    end
+
+    if (UnitXP_SP3_Addon ~= nil and UnitXP_SP3_Addon["notify_playSystemDefaultSound"] ~= nil) then
+        for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
+            if (event == ev and v == true) then
+                if (event == "PARTY_MEMBERS_CHANGED") then
+                    -- Party full
+                    if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4) then
+                        UnitXP_SP3_playSystemDefaultSound();
+                        break
+                    end
+                elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
+                    local i, s;
+                    for i = 1, MAX_BATTLEFIELD_QUEUES do
+                        s = GetBattlefieldStatus(i);
+                        -- Battlefield is ready
+                        if (s == "confirm") then
+                            UnitXP_SP3_playSystemDefaultSound();
+                            break
+                        end
+                    end
+                else
+                    UnitXP_SP3_playSystemDefaultSound();
+                    break
+                end
             end
         end
     end
