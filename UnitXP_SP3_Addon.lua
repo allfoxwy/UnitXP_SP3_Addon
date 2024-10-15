@@ -118,11 +118,14 @@ function UnitXP_SP3_UI_OnClick(widget)
     UnitXP_SP3_reloadConfig();
 end
 
+-- Recording party members from previous PARTY_MEMBERS_CHANGED events so that we can verify if the party just became full
+local lastRecordedPartyMembers = 0
+
 local function checkEvent(listenedEvents, actionFunction)
     if listenedEvents[event] then
         if (event == "PARTY_MEMBERS_CHANGED") then
             -- Party full
-            if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4) then
+            if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4 and lastRecordedPartyMembers ~= 4) then
                 actionFunction();
             end
         elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
@@ -212,6 +215,10 @@ function UnitXP_SP3_OnEvent(event)
 
         if UnitXP_SP3_Addon["notify_playSystemDefaultSound"] then
             checkEvent(UnitXP_SP3_Addon["notify_playSystemDefaultSound"], UnitXP_SP3_playSystemDefaultSound)
+        end
+
+        if event == "PARTY_MEMBERS_CHANGED" then
+            lastRecordedPartyMembers = GetNumPartyMembers()
         end
     end
 end
