@@ -1,7 +1,7 @@
 --[[
     UnitXP Service Pack 3 Lua Addon
 
-    By allfox, and thankful community.
+    By allfox
 ]] --
 UnitXP_SP3_Addon = nil; -- It's a SavedVariable, not local
 
@@ -55,34 +55,26 @@ local function UnitXP_SP3_reloadConfig()
     end
 
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
-        if (type(v) == "boolean") then
-            xpsp3Frame:UnregisterEvent(ev);
-        end
+        xpsp3Frame:UnregisterEvent(ev);
     end
     for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
-        if (type(v) == "boolean") then
-            xpsp3Frame:UnregisterEvent(ev);
-        end
+        xpsp3Frame:UnregisterEvent(ev);
     end
 
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
-        if (type(v) == "boolean") then
-            if (v == true) then
-                xpsp3Frame:RegisterEvent(ev);
-                xpsp3_checkButton_notify_flashTaskbarIcon:SetChecked(true);
-            else
-                xpsp3_checkButton_notify_flashTaskbarIcon:SetChecked(false);
-            end
+        if (v == true) then
+            xpsp3Frame:RegisterEvent(ev);
+            xpsp3_checkButton_notify_flashTaskbarIcon:SetChecked(true);
+        else
+            xpsp3_checkButton_notify_flashTaskbarIcon:SetChecked(false);
         end
     end
     for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
-        if (type(v) == "boolean") then
-            if (v == true) then
-                xpsp3Frame:RegisterEvent(ev);
-                xpsp3_checkButton_notify_playSystemDefaultSound:SetChecked(true);
-            else
-                xpsp3_checkButton_notify_playSystemDefaultSound:SetChecked(false);
-            end
+        if (v == true) then
+            xpsp3Frame:RegisterEvent(ev);
+            xpsp3_checkButton_notify_playSystemDefaultSound:SetChecked(true);
+        else
+            xpsp3_checkButton_notify_playSystemDefaultSound:SetChecked(false);
         end
     end
 
@@ -104,24 +96,20 @@ function UnitXP_SP3_UI_OnClick(widget)
 
         if (string.find(widget:GetName(), "_notify_flashTaskbarIcon")) then
             for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
-                if (type(v) == "boolean") then
-                    if (widget:GetChecked()) then
-                        UnitXP_SP3_Addon["notify_flashTaskbarIcon"][ev] = true;
-                    else
-                        UnitXP_SP3_Addon["notify_flashTaskbarIcon"][ev] = false;
-                    end
+                if (widget:GetChecked()) then
+                    UnitXP_SP3_Addon["notify_flashTaskbarIcon"][ev] = true;
+                else
+                    UnitXP_SP3_Addon["notify_flashTaskbarIcon"][ev] = false;
                 end
             end
         end
 
         if (string.find(widget:GetName(), "_notify_playSystemDefaultSound")) then
             for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
-                if (type(v) == "boolean") then
-                    if (widget:GetChecked()) then
-                        UnitXP_SP3_Addon["notify_playSystemDefaultSound"][ev] = true;
-                    else
-                        UnitXP_SP3_Addon["notify_playSystemDefaultSound"][ev] = false;
-                    end
+                if (widget:GetChecked()) then
+                    UnitXP_SP3_Addon["notify_playSystemDefaultSound"][ev] = true;
+                else
+                    UnitXP_SP3_Addon["notify_playSystemDefaultSound"][ev] = false;
                 end
             end
         end
@@ -131,36 +119,33 @@ function UnitXP_SP3_UI_OnClick(widget)
 end
 
 -- Recording party members from previous PARTY_MEMBERS_CHANGED events so that we can verify if the party just became full
-local lastRecordedPartyMembers = 0;
+local lastRecordedPartyMembers = 0
 
-local function checkEvent(event, notifyMethod)
-    if notifyMethod[event] then
+local function checkEvent(listenedEvents, actionFunction)
+    if listenedEvents[event] then
         if (event == "PARTY_MEMBERS_CHANGED") then
             -- Party full
             if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4 and lastRecordedPartyMembers ~= 4) then
-                notifyMethod["actionFunction"]();
+                actionFunction();
             end
-
         elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
             for i = 1, MAX_BATTLEFIELD_QUEUES do
                 local s = GetBattlefieldStatus(i);
                 -- Battlefield is ready
                 if (s == "confirm") then
-                    notifyMethod["actionFunction"]();
+                    actionFunction();
                     break
                 end
             end
-
         else
-            -- Other events
-            notifyMethod["actionFunction"]();
+            actionFunction();
         end
     end
 end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 12;
+        local dataVersion = 9;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -168,7 +153,6 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
-            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["actionFunction"] = UnitXP_SP3_flashTaskbarIcon;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_WHISPER"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_RAID_WARNING"] = true;
@@ -180,7 +164,6 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PARTY_MEMBERS_CHANGED"] = true;
 
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"] = {};
-            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["actionFunction"] = UnitXP_SP3_playSystemDefaultSound;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PLAYER_REGEN_DISABLED"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_WHISPER"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_RAID_WARNING"] = false;
@@ -210,7 +193,6 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
         end
 
-        -- We might in combat when game start
         if (UnitXP_SP3_Addon["notify_flashTaskbarIcon"] ~= nil and
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] == true and
             UnitAffectingCombat("player")) then
@@ -223,25 +205,20 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_playSystemDefaultSound();
         end
 
-        -- We might in party when game start
-        lastRecordedPartyMembers = GetNumPartyMembers();
-
         return;
     end
 
     if UnitXP_SP3_Addon then
         if UnitXP_SP3_Addon["notify_flashTaskbarIcon"] then
-            checkEvent(event, UnitXP_SP3_Addon["notify_flashTaskbarIcon"]);
+            checkEvent(UnitXP_SP3_Addon["notify_flashTaskbarIcon"], UnitXP_SP3_flashTaskbarIcon)
         end
 
         if UnitXP_SP3_Addon["notify_playSystemDefaultSound"] then
-            checkEvent(event, UnitXP_SP3_Addon["notify_playSystemDefaultSound"]);
+            checkEvent(UnitXP_SP3_Addon["notify_playSystemDefaultSound"], UnitXP_SP3_playSystemDefaultSound)
         end
 
-        -- lastRecordedPartyMembers maintenance could not be done in checkEvent(), because checkEvent() not always be called.
         if event == "PARTY_MEMBERS_CHANGED" then
-            lastRecordedPartyMembers = GetNumPartyMembers();
+            lastRecordedPartyMembers = GetNumPartyMembers()
         end
     end
-
 end
