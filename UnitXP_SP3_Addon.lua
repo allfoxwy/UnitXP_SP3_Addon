@@ -118,6 +118,31 @@ function UnitXP_SP3_UI_OnClick(widget)
     UnitXP_SP3_reloadConfig();
 end
 
+-- Recording party members from previous PARTY_MEMBERS_CHANGED events so that we can verify if the party just became full
+local lastRecordedPartyMembers = 0
+
+local function checkEvent(listenedEvents, actionFunction)
+    if listenedEvents[event] then
+        if (event == "PARTY_MEMBERS_CHANGED") then
+            -- Party full
+            if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4 and lastRecordedPartyMembers ~= 4) then
+                actionFunction();
+            end
+        elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
+            for i = 1, MAX_BATTLEFIELD_QUEUES do
+                local s = GetBattlefieldStatus(i);
+                -- Battlefield is ready
+                if (s == "confirm") then
+                    actionFunction();
+                    break
+                end
+            end
+        else
+            actionFunction();
+        end
+    end
+end
+
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
         local dataVersion = 9;
@@ -183,57 +208,17 @@ function UnitXP_SP3_OnEvent(event)
         return;
     end
 
-    if (UnitXP_SP3_Addon ~= nil and UnitXP_SP3_Addon["notify_flashTaskbarIcon"] ~= nil) then
-        for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
-            if (event == ev and v == true) then
-                if (event == "PARTY_MEMBERS_CHANGED") then
-                    -- Party full
-                    if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4) then
-                        UnitXP_SP3_flashTaskbarIcon();
-                        break
-                    end
-                elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
-                    local i, s;
-                    for i = 1, MAX_BATTLEFIELD_QUEUES do
-                        s = GetBattlefieldStatus(i);
-                        -- Battlefield is ready
-                        if (s == "confirm") then
-                            UnitXP_SP3_flashTaskbarIcon();
-                            break
-                        end
-                    end
-                else
-                    UnitXP_SP3_flashTaskbarIcon();
-                    break
-                end
-            end
+    if UnitXP_SP3_Addon then
+        if UnitXP_SP3_Addon["notify_flashTaskbarIcon"] then
+            checkEvent(UnitXP_SP3_Addon["notify_flashTaskbarIcon"], UnitXP_SP3_flashTaskbarIcon)
         end
-    end
 
-    if (UnitXP_SP3_Addon ~= nil and UnitXP_SP3_Addon["notify_playSystemDefaultSound"] ~= nil) then
-        for ev, v in pairs(UnitXP_SP3_Addon["notify_playSystemDefaultSound"]) do
-            if (event == ev and v == true) then
-                if (event == "PARTY_MEMBERS_CHANGED") then
-                    -- Party full
-                    if (GetNumRaidMembers() == 0 and GetNumPartyMembers() == 4) then
-                        UnitXP_SP3_playSystemDefaultSound();
-                        break
-                    end
-                elseif (event == "UPDATE_BATTLEFIELD_STATUS") then
-                    local i, s;
-                    for i = 1, MAX_BATTLEFIELD_QUEUES do
-                        s = GetBattlefieldStatus(i);
-                        -- Battlefield is ready
-                        if (s == "confirm") then
-                            UnitXP_SP3_playSystemDefaultSound();
-                            break
-                        end
-                    end
-                else
-                    UnitXP_SP3_playSystemDefaultSound();
-                    break
-                end
-            end
+        if UnitXP_SP3_Addon["notify_playSystemDefaultSound"] then
+            checkEvent(UnitXP_SP3_Addon["notify_playSystemDefaultSound"], UnitXP_SP3_playSystemDefaultSound)
+        end
+
+        if event == "PARTY_MEMBERS_CHANGED" then
+            lastRecordedPartyMembers = GetNumPartyMembers()
         end
     end
 end
