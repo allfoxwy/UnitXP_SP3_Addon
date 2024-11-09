@@ -1,7 +1,7 @@
 --[[
     UnitXP Service Pack 3 Lua Addon
 
-    By allfox
+    By allfox, and the thankful community
 ]] --
 UnitXP_SP3_Addon = nil; -- It's a SavedVariable, not local
 
@@ -137,6 +137,14 @@ local function checkEvent(listenedEvents, actionFunction)
                     break
                 end
             end
+        elseif (event == "CHAT_MSG_ADDON") then
+            if (LFT_ADDON_PREFIX ~= nil and arg1 == LFT_ADDON_PREFIX) then
+                if (string.find(arg2, "S2C_OFFER_NEW") or string.find(arg2, "S2C_ROLECHECK_START") or
+                    string.find(arg2, "S2C_QUEUE_LEFT")) then
+                    -- LFT found group or role check start or somehow player left queue
+                    actionFunction();
+                end
+            end
         else
             actionFunction();
         end
@@ -145,7 +153,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 9;
+        local dataVersion = 15;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -162,6 +170,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["GUILD_INVITE_REQUEST"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["UPDATE_BATTLEFIELD_STATUS"] = true;
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PARTY_MEMBERS_CHANGED"] = true;
+            UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["CHAT_MSG_ADDON"] = true; -- For LFT
 
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"] = {};
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PLAYER_REGEN_DISABLED"] = false;
@@ -173,6 +182,9 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["GUILD_INVITE_REQUEST"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["UPDATE_BATTLEFIELD_STATUS"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PARTY_MEMBERS_CHANGED"] = false;
+            UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_ADDON"] = false; -- For LFT
+
+            UnitXP_SP3_Print("UnitXP Service Pack 3 configuration is reset due to addon update.")
         end
 
         local test = false;
@@ -191,6 +203,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Print("UnitXP Service Pack 3 is loaded. Press ESC to access it from Main Menu.");
         else
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
+            return;
         end
 
         if (UnitXP_SP3_Addon["notify_flashTaskbarIcon"] ~= nil and
