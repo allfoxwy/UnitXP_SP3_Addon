@@ -43,8 +43,26 @@ local function UnitXP_SP3_setModernNameplateDistance(enable)
     return pcall(UnitXP, "modernNameplateDistance", enable);
 end
 
+local function UnitXP_SP3_setCameraHeight(value)
+    UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraHeight", "set",  value);
+
+    return UnitXP_SP3_Addon["cameraHeight"];
+end
+
+function UnitXP_SP3_raiseCameraHeight()
+   return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] + 0.25);
+end
+
+
+function UnitXP_SP3_lowerCameraHeight()
+    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.25);
+end
+
+
 local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_setTargetingRangeConeFactor(UnitXP_SP3_Addon["targetingRangeConeFactor"]);
+
+    UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"]);
 
     if (UnitXP_SP3_Addon["modernNameplateDistance"]) then
         UnitXP_SP3_setModernNameplateDistance("enable");
@@ -153,11 +171,12 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 15;
+        local dataVersion = 16;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
             UnitXP_SP3_Addon["targetRangeConeFactor"] = 2.2;
+            UnitXP_SP3_Addon["cameraHeight"] = 0.0;
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};

@@ -57,7 +57,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOP" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="14" y="-140"/>
+							<AbsDimension x="14" y="-160"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -95,7 +95,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
         		<OnLoad>
-            	getglobal(this:GetName().."Text"):SetText("Proper Nameplates Behaviour");
+            	getglobal(this:GetName().."Text"):SetText("Proper Nameplates Behavior");
           		</OnLoad>
 				<OnClick>
             	PlaySound("igMainMenuContinue");
@@ -165,6 +165,46 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
         			</OnLeave>
 				</Scripts>
 		</CheckButton>
+
+
+		<Button name="xpsp3_button_cameraHeight_raise" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Raise Camera">
+        	<Size>
+			    <AbsDimension x="100" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="24" y="-120"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+            	PlaySound("igMainMenuContinue");
+				UnitXP_SP3_raiseCameraHeight();
+				</OnClick>
+			</Scripts>
+		</Button>
+
+		<Button name="xpsp3_button_cameraHeight_lower" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Lower Camera">
+        	<Size>
+			    <AbsDimension x="100" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="130" y="-120"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+            	PlaySound("igMainMenuContinue");
+				UnitXP_SP3_lowerCameraHeight();
+				</OnClick>
+			</Scripts>
+		</Button>
+
     </Frames>
 
     <Scripts>
