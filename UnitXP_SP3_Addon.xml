@@ -79,8 +79,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
 				<OnClick>
-            	PlaySound("igMainMenuContinue");
-				xpsp3Frame:Hide();
+            		PlaySound("gsTitleOptionExit");
+					xpsp3Frame:Hide();
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -98,8 +98,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             	getglobal(this:GetName().."Text"):SetText("Proper Nameplates Behavior");
           		</OnLoad>
 				<OnClick>
-            	PlaySound("igMainMenuContinue");
-				UnitXP_SP3_UI_OnClick(this);
+					UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
@@ -125,7 +124,6 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             getglobal(this:GetName().."Text"):SetText("Taskbar Notification");
           </OnLoad>
 					<OnClick>
-            PlaySound("igMainMenuContinue");
 						UnitXP_SP3_UI_OnClick(this);
 					</OnClick>
           <OnEnter>
@@ -149,19 +147,18 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</Anchors>
 				<Scripts>
         			<OnLoad>
-					getglobal(this:GetName().."Text"):SetText("System Default Sound Notification");
+						getglobal(this:GetName().."Text"):SetText("System Default Sound Notification");
         			</OnLoad>
 					<OnClick>
-            		PlaySound("igMainMenuContinue");
-					UnitXP_SP3_UI_OnClick(this);
+						UnitXP_SP3_UI_OnClick(this);
 					</OnClick>
         			<OnEnter>
-            		xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            		xpsp3tooltip:SetText("Play operating system's default sound when game is in background but require attention");
-            		xpsp3tooltip:Show()
+            			xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            			xpsp3tooltip:SetText("Play operating system's default sound when game is in background but require attention");
+            			xpsp3tooltip:Show()
         			</OnEnter>
         			<OnLeave>
-            		xpsp3tooltip:Hide()
+            			xpsp3tooltip:Hide()
         			</OnLeave>
 				</Scripts>
 		</CheckButton>
@@ -180,8 +177,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
 				<OnClick>
-            	PlaySound("igMainMenuContinue");
-				UnitXP_SP3_raiseCameraHeight();
+					PlaySound("igMainMenuContinue");
+					UnitXP_SP3_raiseCameraHeight();
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -199,8 +196,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
 				<OnClick>
-            	PlaySound("igMainMenuContinue");
-				UnitXP_SP3_lowerCameraHeight();
+					PlaySound("igMainMenuContinue");
+					UnitXP_SP3_lowerCameraHeight();
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -218,15 +215,4 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   </Frame>
 
   <GameTooltip name="xpsp3tooltip" frameStrata="TOOLTIP" hidden="true" parent="xpsp3Frame" inherits="GameTooltipTemplate" />
-
-  <!-- Game Menu Button -->
-	<Button name="GameMenuButtonXPSP3" parent = "GameMenuFrame" inherits="GameMenuButtonTemplate" text="UnitXP SP3">
-		<Scripts>
-			<OnClick>
-				PlaySound("igMainMenuContinue");
-				HideUIPanel(GameMenuFrame);
-				xpsp3Frame:Show();
-			</OnClick>
-		</Scripts>
-	</Button>
 </Ui>

@@ -32,4 +32,16 @@
 		UnitXP("target", "previousEnemyConsideringDistance");
 	</Binding>
 
+	<Binding name="UNITXPSP3RAISECAMERA" header="UNITXPSP3UTILITIES">
+		UnitXP_SP3_raiseCameraHeight();
+	</Binding>
+
+	<Binding name="UNITXPSP3LOWERCAMERA">
+		UnitXP_SP3_lowerCameraHeight();
+	</Binding>
+
+	<Binding name="UNITXPSP3TOGGLEMODERNNAMEPLATEDISTANCE">
+		UnitXP_SP3_toggleModernNameplateDistance();
+	</Binding>
+
 </Bindings>

@@ -4,8 +4,9 @@
     By allfox, and the thankful community
 ]] --
 UnitXP_SP3_Addon = nil; -- It's a SavedVariable, not local
+UnitXP_SP3_Icon = nil; -- It's a SavedVariable, not local
 
--- Key binding strings
+-- Strings
 BINDING_HEADER_UNITXPSP3TARGETING = "UnitXP SP3 Targeting Functions";
 BINDING_NAME_UNITXPSP3NEARESTENEMY = "Nearest Enemy";
 BINDING_NAME_UNITXPSP3WORLDBOSS = "World Boss";
@@ -15,6 +16,14 @@ BINDING_NAME_UNITXPSP3NEXTENEMY = "Next Enemy";
 BINDING_NAME_UNITXPSP3PREVIOUSENEMY = "Previous Enemy";
 BINDING_NAME_UNITXPSP3NEXTMELEE = "Next Enemy Prioritizing Melee";
 BINDING_NAME_UNITXPSP3PREVIOUSMELEE = "Previous Enemy Prioritizing Melee";
+BINDING_HEADER_UNITXPSP3UTILITIES = "UnitXP SP3 Utilities";
+BINDING_NAME_UNITXPSP3RAISECAMERA = "Raise Camera";
+BINDING_NAME_UNITXPSP3LOWERCAMERA = "Lower Camera";
+BINDING_NAME_UNITXPSP3TOGGLEMODERNNAMEPLATEDISTANCE = "Toggle Proper Nameplates Behavior";
+local UNITXPSP3TOOLTIP = "UnitXP SP3 is running"
+
+local libIcon = LibStub("LibDBIcon-1.0");
+local libData = LibStub("LibDataBroker-1.1");
 
 local function UnitXP_SP3_Print(msg)
     if (not DEFAULT_CHAT_FRAME) then
@@ -25,6 +34,7 @@ end
 
 function UnitXP_SP3_OnLoad()
     xpsp3Frame:RegisterEvent("ADDON_LOADED");
+    xpsp3Frame:RegisterEvent("PLAYER_LOGIN");
 end
 
 local function UnitXP_SP3_flashTaskbarIcon()
@@ -44,20 +54,23 @@ local function UnitXP_SP3_setModernNameplateDistance(enable)
 end
 
 local function UnitXP_SP3_setCameraHeight(value)
-    UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraHeight", "set",  value);
+    UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraHeight", "set", value);
 
     return UnitXP_SP3_Addon["cameraHeight"];
 end
 
 function UnitXP_SP3_raiseCameraHeight()
-   return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] + 0.25);
+    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] + 0.2);
 end
-
 
 function UnitXP_SP3_lowerCameraHeight()
-    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.25);
+    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.2);
 end
 
+function UnitXP_SP3_toggleModernNameplateDistance()
+    UnitXP_SP3_Addon["modernNameplateDistance"] = not UnitXP_SP3_Addon["modernNameplateDistance"];
+    UnitXP_SP3_reloadConfig();
+end
 
 local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_setTargetingRangeConeFactor(UnitXP_SP3_Addon["targetingRangeConeFactor"]);
@@ -104,6 +117,12 @@ function UnitXP_SP3_UI_OnClick(widget)
     end
 
     if (string.find(widget:GetName(), "_checkButton_")) then
+        if(widget:GetChecked()) then
+            PlaySound("igMainMenuOptionCheckBoxOn");
+        else
+            PlaySound("igMainMenuOptionCheckBoxOff"); 
+        end
+
         if (string.find(widget:GetName(), "_modernNameplate")) then
             if (widget:GetChecked()) then
                 UnitXP_SP3_Addon["modernNameplateDistance"] = true;
@@ -133,6 +152,11 @@ function UnitXP_SP3_UI_OnClick(widget)
         end
     end
 
+    UnitXP_SP3_reloadConfig();
+end
+
+function UnitXP_SP3_toggleModernNameplateDistance()
+    UnitXP_SP3_Addon["modernNameplateDistance"] = not UnitXP_SP3_Addon["modernNameplateDistance"];
     UnitXP_SP3_reloadConfig();
 end
 
@@ -205,20 +229,19 @@ function UnitXP_SP3_OnEvent(event)
 
             UnitXP_SP3_Print("UnitXP Service Pack 3 configuration is reset due to addon update.")
         end
-
+        if (UnitXP_SP3_Icon == nil) then
+            UnitXP_SP3_Icon = {};
+        end
+        xpsp3Frame:UnregisterEvent("ADDON_LOADED");
+    elseif (event == "PLAYER_LOGIN") then
         local test = false;
-        if (vanilla1121mod ~= nil and vanilla1121mod.UnitXP_SP3 ~= nil) then
-            test = true;
-        elseif (pcall(UnitXP, "notify", "taskbarIcon") == true) then
+
+        if (pcall(UnitXP, "nop", "nop") == true) then
             test = true;
         end
 
         if (test == true) then
-            GameMenuButtonXPSP3:SetPoint("BOTTOM", GameMenuFrame, "BOTTOM", 0, 14);
-            GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonXPSP3:GetHeight());
-
             UnitXP_SP3_reloadConfig();
-
             UnitXP_SP3_Print("UnitXP Service Pack 3 is loaded. Press ESC to access it from Main Menu.");
         else
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
@@ -236,6 +259,25 @@ function UnitXP_SP3_OnEvent(event)
             UnitAffectingCombat("player")) then
             UnitXP_SP3_playSystemDefaultSound();
         end
+
+        local iconData = libData:NewDataObject("UnitXP SP3 icon data", {
+            OnClick = function()
+                
+                if (xpsp3Frame:IsShown()) then
+                    PlaySound("igMainMenuContinue");
+                    xpsp3Frame:Hide();
+                else
+                    PlaySound("igMainMenuOpen");
+                    xpsp3Frame:Show();
+                end
+            end,
+            OnTooltipShow = function(tooltip)
+                tooltip:SetText(UNITXPSP3TOOLTIP);
+            end,
+            icon = "Interface\\Icons\\INV_Misc_Gem_Pearl_05"
+        });
+
+        libIcon:Register("UnitXP SP3 icon", iconData, UnitXP_SP3_Icon);
 
         return;
     end
