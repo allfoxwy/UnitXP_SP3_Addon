@@ -242,7 +242,7 @@ function UnitXP_SP3_OnEvent(event)
 
         if (test == true) then
             UnitXP_SP3_reloadConfig();
-            UnitXP_SP3_Print("UnitXP Service Pack 3 is loaded. Press ESC to access it from Main Menu.");
+            UnitXP_SP3_Print("UnitXP Service Pack 3 is loaded.");
         else
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
             return;
