@@ -20,6 +20,7 @@ BINDING_HEADER_UNITXPSP3UTILITIES = "UnitXP SP3 Utilities";
 BINDING_NAME_UNITXPSP3RAISECAMERA = "Raise Camera";
 BINDING_NAME_UNITXPSP3LOWERCAMERA = "Lower Camera";
 BINDING_NAME_UNITXPSP3TOGGLEMODERNNAMEPLATEDISTANCE = "Toggle Proper Nameplates Behavior";
+BINDING_NAME_UNITXPSP3TOGGLEONLYTARGETHASNAMEPLATE = "Toggle Only Target Receives Nameplate";
 local UNITXPSP3TOOLTIP = "UnitXP SP3 is running"
 
 local libIcon = LibStub("LibDBIcon-1.0");
@@ -38,19 +39,23 @@ function UnitXP_SP3_OnLoad()
 end
 
 local function UnitXP_SP3_flashTaskbarIcon()
-    return pcall(UnitXP, "notify", "taskbarIcon");
+    return UnitXP("notify", "taskbarIcon");
 end
 
 local function UnitXP_SP3_playSystemDefaultSound()
-    return pcall(UnitXP, "notify", "systemSound", "SystemDefault");
+    return UnitXP("notify", "systemSound", "SystemDefault");
 end
 
 local function UnitXP_SP3_setTargetingRangeConeFactor(factor)
-    return pcall(UnitXP, "target", "rangeCone", factor);
+    return UnitXP("target", "rangeCone", factor);
 end
 
 local function UnitXP_SP3_setModernNameplateDistance(enable)
-    return pcall(UnitXP, "modernNameplateDistance", enable);
+    return UnitXP("modernNameplateDistance", enable);
+end
+
+local function UnitXP_SP3_setOnlyTargetHasNameplate(enable)
+    return UnitXP("onlyTargetHasNameplate", enable);
 end
 
 local function UnitXP_SP3_setCameraHeight(value)
@@ -67,11 +72,6 @@ function UnitXP_SP3_lowerCameraHeight()
     return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.2);
 end
 
-function UnitXP_SP3_toggleModernNameplateDistance()
-    UnitXP_SP3_Addon["modernNameplateDistance"] = not UnitXP_SP3_Addon["modernNameplateDistance"];
-    UnitXP_SP3_reloadConfig();
-end
-
 local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_setTargetingRangeConeFactor(UnitXP_SP3_Addon["targetingRangeConeFactor"]);
 
@@ -83,6 +83,14 @@ local function UnitXP_SP3_reloadConfig()
     else
         UnitXP_SP3_setModernNameplateDistance("disable");
         xpsp3_checkButton_modernNameplate:SetChecked(false);
+    end
+
+    if (UnitXP_SP3_Addon["onlyTargetHasNameplate"]) then
+        UnitXP_SP3_setOnlyTargetHasNameplate("enable");
+        xpsp3_checkButton_onlyTargetHasNameplate:SetChecked(true);
+    else
+        UnitXP_SP3_setOnlyTargetHasNameplate("disable");
+        xpsp3_checkButton_onlyTargetHasNameplate:SetChecked(false);
     end
 
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
@@ -131,6 +139,14 @@ function UnitXP_SP3_UI_OnClick(widget)
             end
         end
 
+        if (string.find(widget:GetName(), "_onlyTargetHasNameplate")) then
+            if (widget:GetChecked()) then
+                UnitXP_SP3_Addon["onlyTargetHasNameplate"] = true;
+            else
+                UnitXP_SP3_Addon["onlyTargetHasNameplate"] = false;
+            end
+        end
+
         if (string.find(widget:GetName(), "_notify_flashTaskbarIcon")) then
             for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
                 if (widget:GetChecked()) then
@@ -157,6 +173,11 @@ end
 
 function UnitXP_SP3_toggleModernNameplateDistance()
     UnitXP_SP3_Addon["modernNameplateDistance"] = not UnitXP_SP3_Addon["modernNameplateDistance"];
+    UnitXP_SP3_reloadConfig();
+end
+
+function UnitXP_SP3_toggleOnlyTargetHasNameplate()
+    UnitXP_SP3_Addon["onlyTargetHasNameplate"] = not UnitXP_SP3_Addon["onlyTargetHasNameplate"];
     UnitXP_SP3_reloadConfig();
 end
 
@@ -195,13 +216,14 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 16;
+        local dataVersion = 17;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
             UnitXP_SP3_Addon["targetRangeConeFactor"] = 2.2;
             UnitXP_SP3_Addon["cameraHeight"] = 0.0;
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
+            UnitXP_SP3_Addon["onlyTargetHasNameplate"] = false;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;
@@ -227,7 +249,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["PARTY_MEMBERS_CHANGED"] = false;
             UnitXP_SP3_Addon["notify_playSystemDefaultSound"]["CHAT_MSG_ADDON"] = false; -- For LFT
 
-            UnitXP_SP3_Print("UnitXP Service Pack 3 configuration is reset due to addon update.")
+            UnitXP_SP3_Print("UnitXP Service Pack 3 configuration is reset due to AddOn update.")
         end
         if (UnitXP_SP3_Icon == nil) then
             UnitXP_SP3_Icon = {};

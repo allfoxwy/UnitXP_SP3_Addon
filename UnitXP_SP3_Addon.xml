@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   <Frame name="xpsp3Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
 	<TitleRegion setAllPoints="true"/>
     <Size>
-		<AbsDimension x="250" y="240"/>
+		<AbsDimension x="250" y="280"/>
 	</Size>
     <Anchors>
 		<Anchor point="CENTER" relativeTo="UIParent" />
@@ -57,7 +57,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOP" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="14" y="-160"/>
+							<AbsDimension x="14" y="-190"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -111,11 +111,37 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</CheckButton>
 
+		<CheckButton name="xpsp3_checkButton_onlyTargetHasNameplate" inherits="UICheckButtonTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="24" y="-60"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+        		<OnLoad>
+            	getglobal(this:GetName().."Text"):SetText("Only Target Receives Nameplate");
+          		</OnLoad>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+          		<OnEnter>
+            	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            	xpsp3tooltip:SetText("Nameplate would be shown only on target. Need Proper Nameplates Behavior to be also enabled");
+            	xpsp3tooltip:Show()
+          		</OnEnter>
+          		<OnLeave>
+            	xpsp3tooltip:Hide()
+          		</OnLeave>
+			</Scripts>
+		</CheckButton>
+
       <CheckButton name="xpsp3_checkButton_notify_flashTaskbarIcon" inherits="UICheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-60"/>
+							<AbsDimension x="24" y="-90"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -141,7 +167,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-90"/>
+							<AbsDimension x="24" y="-120"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -171,7 +197,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="24" y="-120"/>
+						<AbsDimension x="24" y="-150"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -190,7 +216,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="130" y="-120"/>
+						<AbsDimension x="130" y="-150"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
