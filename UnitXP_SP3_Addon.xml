@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   <Frame name="xpsp3Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
 	<TitleRegion setAllPoints="true"/>
     <Size>
-		<AbsDimension x="250" y="280"/>
+		<AbsDimension x="250" y="310"/>
 	</Size>
     <Anchors>
 		<Anchor point="CENTER" relativeTo="UIParent" />
@@ -57,7 +57,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOP" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="14" y="-190"/>
+							<AbsDimension x="14" y="-210"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -111,7 +111,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</CheckButton>
 
-		<CheckButton name="xpsp3_checkButton_onlyTargetHasNameplate" inherits="UICheckButtonTemplate">
+		<CheckButton name="xpsp3_checkButton_prioritizeTargetNameplate" inherits="UICheckButtonTemplate">
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
@@ -121,14 +121,40 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
         		<OnLoad>
-            	getglobal(this:GetName().."Text"):SetText("Only Target Receives Nameplate");
+            	getglobal(this:GetName().."Text"):SetText("Prioritize Target Nameplate");
           		</OnLoad>
 				<OnClick>
 					UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Nameplate would be shown only on target. Need Proper Nameplates Behavior to be also enabled");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when a target is selected. Need Proper Nameplates Behavior to be also enabled");
+            	xpsp3tooltip:Show()
+          		</OnEnter>
+          		<OnLeave>
+            	xpsp3tooltip:Hide()
+          		</OnLeave>
+			</Scripts>
+		</CheckButton>
+
+		<CheckButton name="xpsp3_checkButton_prioritizeMarkedNameplate" inherits="UICheckButtonTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="24" y="-90"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+        		<OnLoad>
+            	getglobal(this:GetName().."Text"):SetText("Prioritize Marked Nameplate");
+          		</OnLoad>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+          		<OnEnter>
+            	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are marked. Need Proper Nameplates Behavior to be also enabled");
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -141,7 +167,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-90"/>
+							<AbsDimension x="24" y="-120"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -167,7 +193,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-120"/>
+							<AbsDimension x="24" y="-150"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -197,7 +223,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="24" y="-150"/>
+						<AbsDimension x="24" y="-180"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -216,7 +242,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="130" y="-150"/>
+						<AbsDimension x="130" y="-180"/>
 					</Offset>
 				</Anchor>
 			</Anchors>

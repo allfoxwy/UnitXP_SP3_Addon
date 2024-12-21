@@ -20,7 +20,8 @@ BINDING_HEADER_UNITXPSP3UTILITIES = "UnitXP SP3 Utilities";
 BINDING_NAME_UNITXPSP3RAISECAMERA = "Raise Camera";
 BINDING_NAME_UNITXPSP3LOWERCAMERA = "Lower Camera";
 BINDING_NAME_UNITXPSP3TOGGLEMODERNNAMEPLATEDISTANCE = "Toggle Proper Nameplates Behavior";
-BINDING_NAME_UNITXPSP3TOGGLEONLYTARGETHASNAMEPLATE = "Toggle Only Target Receives Nameplate";
+BINDING_NAME_UNITXPSP3TOGGLEPRIORITIZETARGETNAMEPLATE = "Toggle Prioritize Target Nameplate";
+BINDING_NAME_UNITXPSP3TOGGLEPRIORITIZEMARKEDNAMEPLATE = "Toggle Prioritize Marked Nameplate";
 local UNITXPSP3TOOLTIP = "UnitXP SP3 is running"
 
 local libIcon = LibStub("LibDBIcon-1.0");
@@ -54,8 +55,12 @@ local function UnitXP_SP3_setModernNameplateDistance(enable)
     return UnitXP("modernNameplateDistance", enable);
 end
 
-local function UnitXP_SP3_setOnlyTargetHasNameplate(enable)
-    return UnitXP("onlyTargetHasNameplate", enable);
+local function UnitXP_SP3_setPrioritizeTargetNameplate(enable)
+    return UnitXP("prioritizeTargetNameplate", enable);
+end
+
+local function UnitXP_SP3_setPrioritizeMarkedNameplate(enable)
+    return UnitXP("prioritizeMarkedNameplate", enable);
 end
 
 local function UnitXP_SP3_setCameraHeight(value)
@@ -85,12 +90,20 @@ local function UnitXP_SP3_reloadConfig()
         xpsp3_checkButton_modernNameplate:SetChecked(false);
     end
 
-    if (UnitXP_SP3_Addon["onlyTargetHasNameplate"]) then
-        UnitXP_SP3_setOnlyTargetHasNameplate("enable");
-        xpsp3_checkButton_onlyTargetHasNameplate:SetChecked(true);
+    if (UnitXP_SP3_Addon["prioritizeTargetNameplate"]) then
+        UnitXP_SP3_setPrioritizeTargetNameplate("enable");
+        xpsp3_checkButton_prioritizeTargetNameplate:SetChecked(true);
     else
-        UnitXP_SP3_setOnlyTargetHasNameplate("disable");
-        xpsp3_checkButton_onlyTargetHasNameplate:SetChecked(false);
+        UnitXP_SP3_setPrioritizeTargetNameplate("disable");
+        xpsp3_checkButton_prioritizeTargetNameplate:SetChecked(false);
+    end
+
+    if (UnitXP_SP3_Addon["prioritizeMarkedNameplate"]) then
+        UnitXP_SP3_setPrioritizeMarkedNameplate("enable");
+        xpsp3_checkButton_prioritizeMarkedNameplate:SetChecked(true);
+    else
+        UnitXP_SP3_setPrioritizeMarkedNameplate("disable");
+        xpsp3_checkButton_prioritizeMarkedNameplate:SetChecked(false);
     end
 
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
@@ -139,11 +152,19 @@ function UnitXP_SP3_UI_OnClick(widget)
             end
         end
 
-        if (string.find(widget:GetName(), "_onlyTargetHasNameplate")) then
+        if (string.find(widget:GetName(), "_prioritizeTargetNameplate")) then
             if (widget:GetChecked()) then
-                UnitXP_SP3_Addon["onlyTargetHasNameplate"] = true;
+                UnitXP_SP3_Addon["prioritizeTargetNameplate"] = true;
             else
-                UnitXP_SP3_Addon["onlyTargetHasNameplate"] = false;
+                UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
+            end
+        end
+
+        if (string.find(widget:GetName(), "_prioritizeMarkedNameplate")) then
+            if (widget:GetChecked()) then
+                UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = true;
+            else
+                UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;
             end
         end
 
@@ -176,8 +197,13 @@ function UnitXP_SP3_toggleModernNameplateDistance()
     UnitXP_SP3_reloadConfig();
 end
 
-function UnitXP_SP3_toggleOnlyTargetHasNameplate()
-    UnitXP_SP3_Addon["onlyTargetHasNameplate"] = not UnitXP_SP3_Addon["onlyTargetHasNameplate"];
+function UnitXP_SP3_togglePrioritizeTargetNameplate()
+    UnitXP_SP3_Addon["prioritizeTargetNameplate"] = not UnitXP_SP3_Addon["prioritizeTargetNameplate"];
+    UnitXP_SP3_reloadConfig();
+end
+
+function UnitXP_SP3_togglePrioritizeMarkedNameplate()
+    UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = not UnitXP_SP3_Addon["prioritizeMarkedNameplate"];
     UnitXP_SP3_reloadConfig();
 end
 
@@ -216,14 +242,15 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 17;
+        local dataVersion = 18;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
             UnitXP_SP3_Addon["targetRangeConeFactor"] = 2.2;
             UnitXP_SP3_Addon["cameraHeight"] = 0.0;
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
-            UnitXP_SP3_Addon["onlyTargetHasNameplate"] = false;
+            UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
+            UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;

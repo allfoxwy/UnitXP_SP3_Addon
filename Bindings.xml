@@ -44,8 +44,12 @@
 		UnitXP_SP3_toggleModernNameplateDistance();
 	</Binding>
 
-	<Binding name="UNITXPSP3TOGGLEONLYTARGETHASNAMEPLATE">
-		UnitXP_SP3_toggleOnlyTargetHasNameplate();
+	<Binding name="UNITXPSP3TOGGLEPRIORITIZETARGETNAMEPLATE">
+		UnitXP_SP3_togglePrioritizeTargetNameplate();
+	</Binding>
+
+	<Binding name="UNITXPSP3TOGGLEPRIORITIZEMARKEDNAMEPLATE">
+		UnitXP_SP3_togglePrioritizeMarkedNameplate();
 	</Binding>
 
 </Bindings>
