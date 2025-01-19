@@ -57,7 +57,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOP" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="0" y="-210"/>
+							<AbsDimension x="0" y="-240"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -199,7 +199,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</Anchors>
 				<Scripts>
         			<OnLoad>
-						getglobal(this:GetName().."Text"):SetText("System Default Sound Notification");
+						getglobal(this:GetName().."Text"):SetText("System Sound Notification");
         			</OnLoad>
 					<OnClick>
 						UnitXP_SP3_UI_OnClick(this);
@@ -254,6 +254,44 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</Button>
 
+
+		<Button name="xpsp3_button_cameraHorizontalDisplacement_leftPlayer" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Left Player">
+        	<Size>
+			    <AbsDimension x="100" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="24" y="-210"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PlaySound("igMainMenuContinue");
+					UnitXP_SP3_leftPlayer();
+				</OnClick>
+			</Scripts>
+		</Button>
+
+		<Button name="xpsp3_button_cameraHorizontalDisplacement_rightPlayer" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Right Player">
+        	<Size>
+			    <AbsDimension x="100" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="130" y="-210"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					PlaySound("igMainMenuContinue");
+					UnitXP_SP3_rightPlayer();
+				</OnClick>
+			</Scripts>
+		</Button>
     </Frames>
 
     <Scripts>

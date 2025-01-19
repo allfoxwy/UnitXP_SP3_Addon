@@ -69,6 +69,20 @@ local function UnitXP_SP3_setCameraHeight(value)
     return UnitXP_SP3_Addon["cameraHeight"];
 end
 
+local function UnitXP_SP3_setCameraHorizontalDisplacement(value)
+    UnitXP_SP3_Addon["cameraHorizontalDisplacement"] = UnitXP("cameraHorizontalDisplacement", "set", value);
+
+    return UnitXP_SP3_Addon["cameraHorizontalDisplacement"];
+end
+
+function UnitXP_SP3_leftPlayer()
+    return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] + 0.5);
+end
+
+function UnitXP_SP3_rightPlayer()
+    return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] - 0.5);
+end
+
 function UnitXP_SP3_raiseCameraHeight()
     return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] + 0.2);
 end
@@ -81,6 +95,7 @@ local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_setTargetingRangeConeFactor(UnitXP_SP3_Addon["targetingRangeConeFactor"]);
 
     UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"]);
+    UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"]);
 
     if (UnitXP_SP3_Addon["modernNameplateDistance"]) then
         UnitXP_SP3_setModernNameplateDistance("enable");
@@ -242,12 +257,13 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 18;
+        local dataVersion = 19;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
             UnitXP_SP3_Addon["targetRangeConeFactor"] = 2.2;
             UnitXP_SP3_Addon["cameraHeight"] = 0.0;
+            UnitXP_SP3_Addon["cameraHorizontalDisplacement"] = 0.0;
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
             UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
             UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;
