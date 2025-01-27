@@ -75,6 +75,12 @@ local function UnitXP_SP3_setCameraHorizontalDisplacement(value)
     return UnitXP_SP3_Addon["cameraHorizontalDisplacement"];
 end
 
+function UnitXP_SP3_resetCamera()
+    UnitXP_SP3_setCameraHorizontalDisplacement(0);
+    UnitXP_SP3_setCameraHeight(0);
+    return 0;
+end
+
 function UnitXP_SP3_leftPlayer()
     return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] + 0.5);
 end

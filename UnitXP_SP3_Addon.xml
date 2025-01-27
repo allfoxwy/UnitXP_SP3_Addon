@@ -85,6 +85,25 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</Button>
 
+		<Button name="xpsp3_button_resetCamera" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Reset Camera">
+        	<Size>
+			    <AbsDimension x="100" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="BOTTOMRIGHT">
+					<Offset>
+						<AbsDimension x="-115" y="15"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+            		PlaySound("gsTitleOptionExit");
+					UnitXP_SP3_resetCamera();
+				</OnClick>
+			</Scripts>
+		</Button>
+
     	<CheckButton name="xpsp3_checkButton_modernNameplate" inherits="UICheckButtonTemplate">
 			<Anchors>
 				<Anchor point="TOPLEFT">
@@ -292,6 +311,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
 			</Scripts>
 		</Button>
+
+		
+
+
     </Frames>
 
     <Scripts>
