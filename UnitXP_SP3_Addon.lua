@@ -6,6 +6,18 @@
 UnitXP_SP3_Addon = nil; -- It's a SavedVariable, not local
 UnitXP_SP3_Icon = nil; -- It's a SavedVariable, not local
 
+-- Commands
+SLASH_UNITXP1 = "/unitxp";
+SlashCmdList["UNITXP"] = function()
+    if xpsp3Frame:IsShown() then
+        PlaySound("igMainMenuContinue");
+        xpsp3Frame:Hide();
+    else
+        PlaySound("igMainMenuOpen");
+        xpsp3Frame:Show();
+    end
+end
+
 -- Strings
 BINDING_HEADER_UNITXPSP3TARGETING = "UnitXP SP3 Targeting Functions";
 BINDING_NAME_UNITXPSP3NEARESTENEMY = "Nearest Enemy";
