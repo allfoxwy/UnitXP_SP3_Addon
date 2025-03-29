@@ -140,7 +140,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
         		<OnLoad>
-            	getglobal(this:GetName().."Text"):SetText("Proper Nameplates Behavior");
+            	getglobal(this:GetName().."Text"):SetText("Proper Nameplates Occlusion");
           		</OnLoad>
 				<OnClick>
 					UnitXP_SP3_UI_OnClick(this);
@@ -173,7 +173,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Other nameplates would disappear when a target is selected. Need Proper Nameplates Behavior to be also enabled");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when a target is selected. Need Proper Nameplates Occlusion to be also enabled");
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -199,7 +199,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are marked. Need Proper Nameplates Behavior to be also enabled");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are marked. Need Proper Nameplates Occlusion to be also enabled");
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
