@@ -6,6 +6,18 @@
 UnitXP_SP3_Addon = nil; -- It's a SavedVariable, not local
 UnitXP_SP3_Icon = nil; -- It's a SavedVariable, not local
 
+-- Commands
+SLASH_UNITXP1 = "/unitxp";
+SlashCmdList["UNITXP"] = function()
+    if xpsp3Frame:IsShown() then
+        PlaySound("igMainMenuContinue");
+        xpsp3Frame:Hide();
+    else
+        PlaySound("igMainMenuOpen");
+        xpsp3Frame:Show();
+    end
+end
+
 -- Strings
 BINDING_HEADER_UNITXPSP3TARGETING = "UnitXP SP3 Targeting Functions";
 BINDING_NAME_UNITXPSP3NEARESTENEMY = "Nearest Enemy";
@@ -103,6 +115,12 @@ local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"]);
     UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"]);
 
+    if UnitXP_SP3_Icon.hide then
+        xpsp3_checkButton_minimapButton:SetChecked(false);
+    else
+        xpsp3_checkButton_minimapButton:SetChecked(true);
+    end
+
     if (UnitXP_SP3_Addon["modernNameplateDistance"]) then
         UnitXP_SP3_setModernNameplateDistance("enable");
         xpsp3_checkButton_modernNameplate:SetChecked(true);
@@ -163,6 +181,11 @@ function UnitXP_SP3_UI_OnClick(widget)
             PlaySound("igMainMenuOptionCheckBoxOn");
         else
             PlaySound("igMainMenuOptionCheckBoxOff"); 
+        end
+
+        if (string.find(widget:GetName(), "_minimapButton")) then
+            UnitXP_SP3_Icon.hide = not widget:GetChecked();
+            libIcon:Refresh("UnitXP SP3 icon", UnitXP_SP3_Icon);
         end
 
         if (string.find(widget:GetName(), "_modernNameplate")) then
@@ -301,7 +324,9 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Print("UnitXP Service Pack 3 configuration is reset due to AddOn update.")
         end
         if (UnitXP_SP3_Icon == nil) then
-            UnitXP_SP3_Icon = {};
+            UnitXP_SP3_Icon = {
+                hide = false;
+            };
         end
         xpsp3Frame:UnregisterEvent("ADDON_LOADED");
     elseif (event == "PLAYER_LOGIN") then
