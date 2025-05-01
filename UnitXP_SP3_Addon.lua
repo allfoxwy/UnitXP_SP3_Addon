@@ -55,12 +55,18 @@ local function UnitXP_SP3_flashTaskbarIcon()
     return UnitXP("notify", "taskbarIcon");
 end
 
+local function UnitXP_SP3_FPScap(cap)
+    UnitXP_SP3_Addon["FPScap"] = UnitXP("FPScap", cap);
+    return UnitXP_SP3_Addon["FPScap"];
+end
+
 local function UnitXP_SP3_playSystemDefaultSound()
     return UnitXP("notify", "systemSound", "SystemDefault");
 end
 
 local function UnitXP_SP3_setTargetingRangeConeFactor(factor)
-    return UnitXP("target", "rangeCone", factor);
+    UnitXP_SP3_Addon["targetingRangeConeFactor"] = UnitXP("target", "rangeCone", factor);
+    return UnitXP_SP3_Addon["targetingRangeConeFactor"];
 end
 
 local function UnitXP_SP3_setModernNameplateDistance(enable)
@@ -110,6 +116,9 @@ function UnitXP_SP3_lowerCameraHeight()
 end
 
 local function UnitXP_SP3_reloadConfig()
+    UnitXP_SP3_FPScap(UnitXP_SP3_Addon["FPScap"]);
+    xpsp3_editBox_FPScap:SetNumber(UnitXP_SP3_Addon["FPScap"]);
+
     UnitXP_SP3_setTargetingRangeConeFactor(UnitXP_SP3_Addon["targetingRangeConeFactor"]);
 
     UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"]);
@@ -174,6 +183,41 @@ end
 function UnitXP_SP3_UI_OnClick(widget)
     if (widget == nil or string.find(widget:GetName(), "xpsp3") == nil) then
         return
+    end
+
+    xpsp3_editBox_FPScap:ClearFocus();
+
+    if (string.find(widget:GetName(), "_editBox_")) then
+        PlaySound("igMainMenuContinue");
+        if (string.find(widget:GetName(), "_FPScap")) then
+            UnitXP_SP3_FPScap(widget:GetNumber());
+        end
+    end
+
+    if (string.find(widget:GetName(), "_button_")) then
+        PlaySound("igMainMenuContinue");
+        if (string.find(widget:GetName(), "_cameraHeight_raise")) then
+            UnitXP_SP3_raiseCameraHeight();
+        end
+        if (string.find(widget:GetName(), "_cameraHeight_lower")) then
+            UnitXP_SP3_lowerCameraHeight();
+        end
+        if (string.find(widget:GetName(), "_cameraHorizontalDisplacement_leftPlayer")) then
+            UnitXP_SP3_leftPlayer();
+        end
+        if (string.find(widget:GetName(), "_cameraHorizontalDisplacement_rightPlayer")) then
+            UnitXP_SP3_rightPlayer();
+        end
+    end
+
+    if (string.find(widget:GetName(), "_buttonCancel_")) then
+        PlaySound("gsTitleOptionExit");
+        if (string.find(widget:GetName(), "_close")) then
+            xpsp3Frame:Hide();
+        end
+        if (string.find(widget:GetName(), "_resetCamera")) then
+            UnitXP_SP3_resetCamera();
+        end
     end
 
     if (string.find(widget:GetName(), "_checkButton_")) then
@@ -286,7 +330,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 19;
+        local dataVersion = 20;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -296,6 +340,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
             UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
             UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;
+            UnitXP_SP3_Addon["FPScap"] = 0;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;

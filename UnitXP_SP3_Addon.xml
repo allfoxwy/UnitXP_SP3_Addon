@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   <Frame name="xpsp3Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
 	<TitleRegion setAllPoints="true"/>
     <Size>
-		<AbsDimension x="250" y="340"/>
+		<AbsDimension x="250" y="380"/>
 	</Size>
     <Anchors>
 		<Anchor point="CENTER" relativeTo="UIParent" />
@@ -52,12 +52,22 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 					</Anchor>
 				</Anchors>
 			</FontString>
-			<FontString inherits="GameFontNormal" text="Targeting functions could be accessed via Key Bindings Menu." justifyH="LEFT" justifyV="TOP">
-				<Size x="200" y="400" />
+			<FontString inherits="GameFontNormal" text="FPS cap:" justifyH="LEFT" justifyV="TOP">
+				<Size x="200" y="440" />
 				<Anchors>
 					<Anchor point="TOP" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="0" y="-270"/>
+							<AbsDimension x="0" y="-220"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</FontString>
+			<FontString inherits="GameFontNormal" text="Targeting functions could be accessed via Key Bindings Menu." justifyH="LEFT" justifyV="TOP">
+				<Size x="200" y="440" />
+				<Anchors>
+					<Anchor point="TOP" relativeTo="xpsp3Frame">
+						<Offset>
+							<AbsDimension x="0" y="-305"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -66,7 +76,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
     </Layers>
 
     <Frames>
-    	<Button name="xpsp3_button_close" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Close">
+    	<Button name="xpsp3_buttonCancel_close" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Close">
         	<Size>
 			    <AbsDimension x="100" y="24"/>
 		    </Size>
@@ -79,13 +89,12 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
 				<OnClick>
-            		PlaySound("gsTitleOptionExit");
-					xpsp3Frame:Hide();
+            		UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
 			</Scripts>
 		</Button>
 
-		<Button name="xpsp3_button_resetCamera" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Reset Camera">
+		<Button name="xpsp3_buttonCancel_resetCamera" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Reset Camera">
         	<Size>
 			    <AbsDimension x="100" y="24"/>
 		    </Size>
@@ -98,8 +107,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
 				<OnClick>
-            		PlaySound("gsTitleOptionExit");
-					UnitXP_SP3_resetCamera();
+            		UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -260,6 +268,53 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</Scripts>
 		</CheckButton>
 
+		<EditBox name="xpsp3_editBox_FPScap" letters="3" autoFocus="false" numeric="true">
+    		<Size x="100" y="32" />
+    		<Anchors>
+        		<Anchor point="TOPLEFT">
+            		<Offset>
+						<AbsDimension x="100" y="-210"/>
+					</Offset>
+        		</Anchor>
+    		</Anchors>
+    		<Layers>
+        		<Layer level="BACKGROUND">
+            		<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+                		<Size x="75" y="32" />
+                		<Anchors>
+                    		<Anchor point="LEFT">
+                        		<Offset x="-17" y="0" />
+                    		</Anchor>
+                		</Anchors>
+                		<TexCoords left="0" right="0.2" top="0" bottom="1.0"/>
+            		</Texture>
+            		<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+                		<Size x="75" y="32" />
+                		<Anchors>
+                    		<Anchor point="RIGHT">
+                        		<Offset x="10" y="0" />
+                    		</Anchor>
+                		</Anchors>
+                		<TexCoords left="0.7" right="1.0" top="0" bottom="1.0"/>
+            		</Texture>
+        		</Layer>
+    		</Layers>
+    		<Scripts>
+        		<OnEditFocusGained>
+           			xpsp3tooltip:SetOwner(this, "ANCHOR_LEFT");
+           			xpsp3tooltip:SetText("Limit frames-per-second. Zero means no limit.");
+           			xpsp3tooltip:Show();
+       			</OnEditFocusGained>
+       			<OnEditFocusLost>
+           			xpsp3tooltip:Hide();
+       			</OnEditFocusLost>
+				<OnEnterPressed>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnEnterPressed>
+    		</Scripts>
+    		<FontString inherits="ChatFontNormal" />
+		</EditBox>
+
 
 		<Button name="xpsp3_button_cameraHeight_raise" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Raise Camera">
         	<Size>
@@ -268,14 +323,13 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="24" y="-210"/>
+						<AbsDimension x="24" y="-250"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
 			<Scripts>
 				<OnClick>
-					PlaySound("igMainMenuContinue");
-					UnitXP_SP3_raiseCameraHeight();
+					UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -287,14 +341,13 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="130" y="-210"/>
+						<AbsDimension x="130" y="-250"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
 			<Scripts>
 				<OnClick>
-					PlaySound("igMainMenuContinue");
-					UnitXP_SP3_lowerCameraHeight();
+					UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -307,14 +360,13 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="24" y="-240"/>
+						<AbsDimension x="24" y="-275"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
 			<Scripts>
 				<OnClick>
-					PlaySound("igMainMenuContinue");
-					UnitXP_SP3_leftPlayer();
+					UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
 			</Scripts>
 		</Button>
@@ -326,14 +378,13 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="130" y="-240"/>
+						<AbsDimension x="130" y="-275"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
 			<Scripts>
 				<OnClick>
-					PlaySound("igMainMenuContinue");
-					UnitXP_SP3_rightPlayer();
+					UnitXP_SP3_UI_OnClick(this);
 				</OnClick>
 			</Scripts>
 		</Button>
