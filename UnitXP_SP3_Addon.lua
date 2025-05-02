@@ -48,7 +48,6 @@ end
 
 function UnitXP_SP3_OnLoad()
     xpsp3Frame:RegisterEvent("ADDON_LOADED");
-    xpsp3Frame:RegisterEvent("PLAYER_LOGIN");
 end
 
 local function UnitXP_SP3_flashTaskbarIcon()
@@ -374,6 +373,10 @@ function UnitXP_SP3_OnEvent(event)
             };
         end
         xpsp3Frame:UnregisterEvent("ADDON_LOADED");
+        xpsp3Frame:RegisterEvent("PLAYER_LOGIN");
+        xpsp3Frame:RegisterEvent("PLAYER_ENTERING_WORLD");
+        xpsp3Frame:RegisterEvent("PLAYER_LEAVING_WORLD");
+        return;
     elseif (event == "PLAYER_LOGIN") then
         local test = false;
 
@@ -427,6 +430,13 @@ function UnitXP_SP3_OnEvent(event)
 
         libIcon:Register("UnitXP SP3 icon", iconData, UnitXP_SP3_Icon);
 
+        return;
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        UnitXP("FPScap", UnitXP_SP3_Addon["FPScap"]);
+        return;
+    elseif event == "PLAYER_LEAVING_WORLD" then
+        -- Some user report a faster loading time
+        UnitXP("FPScap", 0);
         return;
     end
 
