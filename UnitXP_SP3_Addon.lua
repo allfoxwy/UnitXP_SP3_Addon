@@ -80,6 +80,10 @@ local function UnitXP_SP3_setPrioritizeMarkedNameplate(enable)
     return UnitXP("prioritizeMarkedNameplate", enable);
 end
 
+local function UnitXP_SP3_setNameplateCombatFilter(enable)
+    return UnitXP("nameplateCombatFilter", enable);
+end
+
 local function UnitXP_SP3_setCameraHeight(value)
     UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraHeight", "set", value);
 
@@ -151,6 +155,14 @@ local function UnitXP_SP3_reloadConfig()
     else
         UnitXP_SP3_setPrioritizeMarkedNameplate("disable");
         xpsp3_checkButton_prioritizeMarkedNameplate:SetChecked(false);
+    end
+
+    if (UnitXP_SP3_Addon["nameplateCombatFilter"]) then
+        UnitXP_SP3_setNameplateCombatFilter("enable");
+        xpsp3_checkButton_nameplateCombatFilter:SetChecked(true);
+    else
+        UnitXP_SP3_setNameplateCombatFilter("disable");
+        xpsp3_checkButton_nameplateCombatFilter:SetChecked(false);
     end
 
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
@@ -255,6 +267,14 @@ function UnitXP_SP3_UI_OnClick(widget)
             end
         end
 
+        if (string.find(widget:GetName(), "_nameplateCombatFilter")) then
+            if (widget:GetChecked()) then
+                UnitXP_SP3_Addon["nameplateCombatFilter"] = true;
+            else
+                UnitXP_SP3_Addon["nameplateCombatFilter"] = false;
+            end
+        end
+
         if (string.find(widget:GetName(), "_notify_flashTaskbarIcon")) then
             for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
                 if (widget:GetChecked()) then
@@ -329,7 +349,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 20;
+        local dataVersion = 21;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -339,6 +359,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
             UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
             UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;
+            UnitXP_SP3_Addon["nameplateCombatFilter"] = false;
             UnitXP_SP3_Addon["FPScap"] = 0;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
