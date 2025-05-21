@@ -52,7 +52,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 					</Anchor>
 				</Anchors>
 			</FontString>
-			<FontString inherits="GameFontNormal" text="FPS cap:" justifyH="LEFT" justifyV="TOP">
+			<FontString inherits="GameFontNormal" text="FPS Cap:" justifyH="LEFT" justifyV="TOP">
 				<Size x="200" y="440" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="xpsp3Frame">
