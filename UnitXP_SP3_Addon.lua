@@ -395,8 +395,6 @@ function UnitXP_SP3_OnEvent(event)
         end
         xpsp3Frame:UnregisterEvent("ADDON_LOADED");
         xpsp3Frame:RegisterEvent("PLAYER_LOGIN");
-        xpsp3Frame:RegisterEvent("PLAYER_ENTERING_WORLD");
-        xpsp3Frame:RegisterEvent("PLAYER_LEAVING_WORLD");
         return;
     elseif (event == "PLAYER_LOGIN") then
         local test = false;
@@ -407,13 +405,14 @@ function UnitXP_SP3_OnEvent(event)
 
         if (test == true) then
             UnitXP_SP3_reloadConfig();
+            xpsp3Frame:RegisterEvent("PLAYER_ENTERING_WORLD");
+            xpsp3Frame:RegisterEvent("PLAYER_LEAVING_WORLD");
 
             local message = "UnitXP Service Pack 3 is loaded.";
             local hasCOFFtimestamp, coffTimestamp = pcall(UnitXP, "version", "coffTimeDateStamp");
             if hasCOFFtimestamp then
                 message = message.." It was built on "..date("%d %b %Y", coffTimestamp)..".";
             end
-
             UnitXP_SP3_Print(message);
         else
             UnitXP_SP3_Print("UnitXP Service Pack 3 didn't load properly.");
