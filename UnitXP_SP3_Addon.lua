@@ -85,7 +85,7 @@ local function UnitXP_SP3_setNameplateCombatFilter(enable)
 end
 
 local function UnitXP_SP3_setCameraHeight(value)
-    UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraHeight", "set", value);
+    UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraVerticalDisplacement", "set", value);
 
     return UnitXP_SP3_Addon["cameraHeight"];
 end
