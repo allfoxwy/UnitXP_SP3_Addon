@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   <Frame name="xpsp3Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
 	<TitleRegion setAllPoints="true"/>
     <Size>
-		<AbsDimension x="500" y="345"/>
+		<AbsDimension x="500" y="355"/>
 	</Size>
     <Anchors>
 		<Anchor point="CENTER" relativeTo="UIParent" />
@@ -67,7 +67,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="0" y="-275"/>
+							<AbsDimension x="0" y="-300"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -207,7 +207,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are marked. Need Proper Nameplates Occlusion to be also enabled");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are raid marked. Need Proper Nameplates Occlusion to be also enabled");
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -226,7 +226,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Anchors>
 			<Scripts>
         		<OnLoad>
-            	getglobal(this:GetName().."Text"):SetText("Nameplate Combat Filter");
+            	getglobal(this:GetName().."Text"):SetText("Hide Healthy Nameplates");
           		</OnLoad>
 				<OnClick>
 					UnitXP_SP3_UI_OnClick(this);
@@ -242,11 +242,37 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</CheckButton>
 
+		<CheckButton name="xpsp3_checkButton_showInCombatNameplatesNearPlayer" inherits="UICheckButtonTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="24" y="-190"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+        		<OnLoad>
+            	getglobal(this:GetName().."Text"):SetText("Show In-combat Nameplates Nearby");
+          		</OnLoad>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+          		<OnEnter>
+            	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            	xpsp3tooltip:SetText("In-combat nameplates in small range would be shown regardless of occlusion. Need Proper Nameplates Occlusion to be also enabled");
+            	xpsp3tooltip:Show()
+          		</OnEnter>
+          		<OnLeave>
+            	xpsp3tooltip:Hide()
+          		</OnLeave>
+			</Scripts>
+		</CheckButton>
+
       	<CheckButton name="xpsp3_checkButton_notify_flashTaskbarIcon" inherits="UICheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-200"/>
+							<AbsDimension x="24" y="-230"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -272,7 +298,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-230"/>
+							<AbsDimension x="24" y="-260"/>
 						</Offset>
 					</Anchor>
 				</Anchors>

@@ -84,6 +84,10 @@ local function UnitXP_SP3_setNameplateCombatFilter(enable)
     return UnitXP("nameplateCombatFilter", enable);
 end
 
+local function UnitXP_SP3_setShowInCombatNameplatesNearPlayer(enable)
+    return UnitXP("showInCombatNameplatesNearPlayer", enable);
+end
+
 local function UnitXP_SP3_setCameraHeight(value)
     UnitXP_SP3_Addon["cameraHeight"] = UnitXP("cameraVerticalDisplacement", "set", value);
 
@@ -165,6 +169,14 @@ local function UnitXP_SP3_reloadConfig()
         xpsp3_checkButton_nameplateCombatFilter:SetChecked(false);
     end
 
+    if (UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"]) then
+        UnitXP_SP3_setShowInCombatNameplatesNearPlayer("enable");
+        xpsp3_checkButton_showInCombatNameplatesNearPlayer:SetChecked(true);
+    else
+        UnitXP_SP3_setShowInCombatNameplatesNearPlayer("disable");
+        xpsp3_checkButton_showInCombatNameplatesNearPlayer:SetChecked(false);
+    end
+
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
         xpsp3Frame:UnregisterEvent(ev);
     end
@@ -232,10 +244,10 @@ function UnitXP_SP3_UI_OnClick(widget)
     end
 
     if (string.find(widget:GetName(), "_checkButton_")) then
-        if(widget:GetChecked()) then
+        if (widget:GetChecked()) then
             PlaySound("igMainMenuOptionCheckBoxOn");
         else
-            PlaySound("igMainMenuOptionCheckBoxOff"); 
+            PlaySound("igMainMenuOptionCheckBoxOff");
         end
 
         if (string.find(widget:GetName(), "_minimapButton")) then
@@ -272,6 +284,14 @@ function UnitXP_SP3_UI_OnClick(widget)
                 UnitXP_SP3_Addon["nameplateCombatFilter"] = true;
             else
                 UnitXP_SP3_Addon["nameplateCombatFilter"] = false;
+            end
+        end
+
+        if (string.find(widget:GetName(), "_showInCombatNameplatesNearPlayer")) then
+            if (widget:GetChecked()) then
+                UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"] = true;
+            else
+                UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"] = false;
             end
         end
 
@@ -349,7 +369,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if (event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon") then
-        local dataVersion = 21;
+        local dataVersion = 22;
         if (UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion) then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -360,6 +380,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
             UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;
             UnitXP_SP3_Addon["nameplateCombatFilter"] = false;
+            UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"] = false;
             UnitXP_SP3_Addon["FPScap"] = 0;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
@@ -390,7 +411,7 @@ function UnitXP_SP3_OnEvent(event)
         end
         if (UnitXP_SP3_Icon == nil) then
             UnitXP_SP3_Icon = {
-                hide = false;
+                hide = false
             };
         end
         xpsp3Frame:UnregisterEvent("ADDON_LOADED");
@@ -411,7 +432,7 @@ function UnitXP_SP3_OnEvent(event)
             local message = "UnitXP Service Pack 3 is loaded.";
             local hasCOFFtimestamp, coffTimestamp = pcall(UnitXP, "version", "coffTimeDateStamp");
             if hasCOFFtimestamp then
-                message = message.." It was built on "..date("%d %b %Y", coffTimestamp)..".";
+                message = message .. " It was built on " .. date("%d %b %Y", coffTimestamp) .. ".";
             end
             UnitXP_SP3_Print(message);
         else
@@ -433,7 +454,7 @@ function UnitXP_SP3_OnEvent(event)
 
         local iconData = libData:NewDataObject("UnitXP SP3 icon data", {
             OnClick = function()
-                
+
                 if (xpsp3Frame:IsShown()) then
                     PlaySound("igMainMenuContinue");
                     xpsp3Frame:Hide();
