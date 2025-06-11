@@ -40,6 +40,18 @@
 		UnitXP_SP3_lowerCameraHeight();
 	</Binding>
 
+	<Binding name="UNITXPSP3LEFTCAMERA">
+		UnitXP_SP3_rightPlayer();
+	</Binding>
+
+	<Binding name="UNITXPSP3RIGHTCAMERA">
+		UnitXP_SP3_leftPlayer();
+	</Binding>
+
+	<Binding name="UNITXPSP3RESETCAMERA">
+		UnitXP_SP3_resetCamera();
+	</Binding>
+
 	<Binding name="UNITXPSP3TOGGLEMODERNNAMEPLATEDISTANCE">
 		UnitXP_SP3_toggleModernNameplateDistance();
 	</Binding>
