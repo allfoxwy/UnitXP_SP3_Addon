@@ -320,6 +320,32 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</Scripts>
 		</CheckButton>
 
+		<CheckButton name="xpsp3_checkButton_cameraPinHeight" inherits="UICheckButtonTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="274" y="-160"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+        		<OnLoad>
+            	getglobal(this:GetName().."Text"):SetText("Pin Camera Height");
+          		</OnLoad>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+          		<OnEnter>
+            	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            	xpsp3tooltip:SetText("Camera would keep its height during shapeshifting");
+            	xpsp3tooltip:Show()
+          		</OnEnter>
+          		<OnLeave>
+            	xpsp3tooltip:Hide()
+          		</OnLeave>
+			</Scripts>
+		</CheckButton>
+
 		<EditBox name="xpsp3_editBox_FPScap" letters="3" autoFocus="false" numeric="true">
     		<Size x="100" y="32" />
     		<Anchors>
@@ -370,7 +396,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 
 		<Button name="xpsp3_button_cameraHeight_raise" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Raise Camera">
         	<Size>
-			    <AbsDimension x="100" y="24"/>
+			    <AbsDimension x="110" y="24"/>
 		    </Size>
 			<Anchors>
 				<Anchor point="TOPLEFT">
@@ -388,7 +414,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 
 		<Button name="xpsp3_button_cameraHeight_lower" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Lower Camera">
         	<Size>
-			    <AbsDimension x="100" y="24"/>
+			    <AbsDimension x="110" y="24"/>
 		    </Size>
 			<Anchors>
 				<Anchor point="TOPLEFT">
@@ -404,10 +430,9 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</Button>
 
-
-		<Button name="xpsp3_button_cameraHorizontalDisplacement_leftPlayer" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Left Player">
+		<Button name="xpsp3_button_cameraPitch_up" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="CamPitch Up">
         	<Size>
-			    <AbsDimension x="100" y="24"/>
+			    <AbsDimension x="110" y="24"/>
 		    </Size>
 			<Anchors>
 				<Anchor point="TOPLEFT">
@@ -423,14 +448,50 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			</Scripts>
 		</Button>
 
-		<Button name="xpsp3_button_cameraHorizontalDisplacement_rightPlayer" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Right Player">
+		<Button name="xpsp3_button_cameraPitch_down" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="CamPitch Down">
         	<Size>
-			    <AbsDimension x="100" y="24"/>
+			    <AbsDimension x="110" y="24"/>
 		    </Size>
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
 						<AbsDimension x="380" y="-105"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+			</Scripts>
+		</Button>
+
+		<Button name="xpsp3_button_cameraHorizontalDisplacement_leftPlayer" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Left Player">
+        	<Size>
+			    <AbsDimension x="110" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="274" y="-135"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+			</Scripts>
+		</Button>
+
+		<Button name="xpsp3_button_cameraHorizontalDisplacement_rightPlayer" parent="xpsp3Frame" inherits="GameMenuButtonTemplate" text="Right Player">
+        	<Size>
+			    <AbsDimension x="110" y="24"/>
+		    </Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="380" y="-135"/>
 					</Offset>
 				</Anchor>
 			</Anchors>

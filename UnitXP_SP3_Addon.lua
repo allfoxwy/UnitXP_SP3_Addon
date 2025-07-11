@@ -21,6 +21,7 @@ end
 -- Strings
 BINDING_HEADER_UNITXPSP3TARGETING = "UnitXP SP3 Targeting Functions";
 BINDING_NAME_UNITXPSP3NEARESTENEMY = "Nearest Enemy";
+BINDING_NAME_UNITXPSP3TARGETMOSTHP = "The enemy with most HP";
 BINDING_NAME_UNITXPSP3WORLDBOSS = "World Boss";
 BINDING_NAME_UNITXPSP3NEXTMARKER = "Next Target Marker";
 BINDING_NAME_UNITXPSP3PREVIOUSMARKER = "Previous Target Marker";
@@ -158,6 +159,17 @@ local function UnitXP_SP3_setShowInCombatNameplatesNearPlayer(enable)
     return result;
 end
 
+local function UnitXP_SP3_setCameraPinHeight(enable)
+    local test, result = pcall(UnitXP, "cameraPinHeight", enable);
+
+    if not test then
+        UnitXP_SP3_Print(
+            "UnitXP_SP3.dll failed to execute \"cameraPinHeight\". You might need to update UnitXP_SP3.dll to support this method.");
+        return false;
+    end
+    return result;
+end
+
 local function UnitXP_SP3_setCameraHeight(value)
     local test, result = pcall(UnitXP, "cameraVerticalDisplacement", "set", value);
 
@@ -169,6 +181,19 @@ local function UnitXP_SP3_setCameraHeight(value)
 
     UnitXP_SP3_Addon["cameraHeight"] = result;
     return UnitXP_SP3_Addon["cameraHeight"];
+end
+
+local function UnitXP_SP3_setCameraPitch(value)
+    local test, result = pcall(UnitXP, "cameraPitch", "set", value);
+
+    if not test then
+        UnitXP_SP3_Print(
+            "UnitXP_SP3.dll failed to execute \"cameraPitch set\". You might need to update UnitXP_SP3.dll to support this method.");
+        return UnitXP_SP3_Addon["cameraPitch"];
+    end
+
+    UnitXP_SP3_Addon["cameraPitch"] = result;
+    return UnitXP_SP3_Addon["cameraPitch"];
 end
 
 local function UnitXP_SP3_setCameraHorizontalDisplacement(value)
@@ -187,6 +212,7 @@ end
 function UnitXP_SP3_resetCamera()
     UnitXP_SP3_setCameraHorizontalDisplacement(0);
     UnitXP_SP3_setCameraHeight(0);
+    UnitXP_SP3_setCameraPitch(0);
     return 0;
 end
 
@@ -206,6 +232,14 @@ function UnitXP_SP3_lowerCameraHeight()
     return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.2);
 end
 
+function UnitXP_SP3_cameraPitchUp()
+    return UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"] + 0.02);
+end
+
+function UnitXP_SP3_cameraPitchDown()
+    return UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"] - 0.02);
+end
+
 local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_FPScap(UnitXP_SP3_Addon["FPScap"]);
     xpsp3_editBox_FPScap:SetNumber(UnitXP_SP3_Addon["FPScap"]);
@@ -213,6 +247,7 @@ local function UnitXP_SP3_reloadConfig()
     UnitXP_SP3_setTargetingRangeConeFactor(UnitXP_SP3_Addon["targetingRangeConeFactor"]);
 
     UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"]);
+    UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"]);
     UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"]);
 
     if UnitXP_SP3_Icon.hide then
@@ -227,6 +262,14 @@ local function UnitXP_SP3_reloadConfig()
     else
         UnitXP_SP3_setModernNameplateDistance("disable");
         xpsp3_checkButton_modernNameplate:SetChecked(false);
+    end
+
+    if UnitXP_SP3_Addon["cameraPinHeight"] then
+        UnitXP_SP3_setCameraPinHeight("enable");
+        xpsp3_checkButton_cameraPinHeight:SetChecked(true);
+    else
+        UnitXP_SP3_setCameraPinHeight("disable");
+        xpsp3_checkButton_cameraPinHeight:SetChecked(false);
     end
 
     if UnitXP_SP3_Addon["prioritizeTargetNameplate"] then
@@ -309,6 +352,12 @@ function UnitXP_SP3_UI_OnClick(widget)
         if string.find(widget:GetName(), "_cameraHeight_lower") then
             UnitXP_SP3_lowerCameraHeight();
         end
+        if string.find(widget:GetName(), "_cameraPitch_up") then
+            UnitXP_SP3_cameraPitchUp();
+        end
+        if string.find(widget:GetName(), "_cameraPitch_down") then
+            UnitXP_SP3_cameraPitchDown();
+        end
         if string.find(widget:GetName(), "_cameraHorizontalDisplacement_leftPlayer") then
             UnitXP_SP3_leftPlayer();
         end
@@ -344,6 +393,14 @@ function UnitXP_SP3_UI_OnClick(widget)
                 UnitXP_SP3_Addon["modernNameplateDistance"] = true;
             else
                 UnitXP_SP3_Addon["modernNameplateDistance"] = false;
+            end
+        end
+
+        if string.find(widget:GetName(), "_cameraPinHeight") then
+            if widget:GetChecked() then
+                UnitXP_SP3_Addon["cameraPinHeight"] = true;
+            else
+                UnitXP_SP3_Addon["cameraPinHeight"] = false;
             end
         end
 
@@ -453,13 +510,15 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon" then
-        local dataVersion = 22;
+        local dataVersion = 23;
         if UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
             UnitXP_SP3_Addon["targetRangeConeFactor"] = 2.2;
             UnitXP_SP3_Addon["cameraHeight"] = 0.0;
+            UnitXP_SP3_Addon["cameraPitch"] = 0.0;
             UnitXP_SP3_Addon["cameraHorizontalDisplacement"] = 0.0;
+            UnitXP_SP3_Addon["cameraPinHeight"] = false;
             UnitXP_SP3_Addon["modernNameplateDistance"] = true;
             UnitXP_SP3_Addon["prioritizeTargetNameplate"] = false;
             UnitXP_SP3_Addon["prioritizeMarkedNameplate"] = false;

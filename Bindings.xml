@@ -4,6 +4,10 @@
 		UnitXP("target", "nearestEnemy");
 	</Binding>
 
+	<Binding name="BINDING_NAME_UNITXPSP3TARGETMOSTHP" header="UNITXPSP3TARGETING">
+		UnitXP("target", "mostHP");
+	</Binding>
+
 	<Binding name="UNITXPSP3WORLDBOSS">
 		UnitXP("target", "worldBoss");
 	</Binding>
