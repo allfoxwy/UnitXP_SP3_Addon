@@ -159,6 +159,17 @@ local function UnitXP_SP3_setShowInCombatNameplatesNearPlayer(enable)
     return result;
 end
 
+local function UnitXP_SP3_setWeatherAlwaysClear(enable)
+    local test, result = pcall(UnitXP, "weatherAlwaysClear", enable);
+
+    if not test then
+        UnitXP_SP3_Print(
+            "UnitXP_SP3.dll failed to execute \"weatherAlwaysClear\". You might need to update UnitXP_SP3.dll to support this method.");
+        return false;
+    end
+    return result;
+end
+
 local function UnitXP_SP3_setCameraPinHeight(enable)
     local test, result = pcall(UnitXP, "cameraPinHeight", enable);
 
@@ -217,27 +228,27 @@ function UnitXP_SP3_resetCamera()
 end
 
 function UnitXP_SP3_leftPlayer()
-    return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] + 0.5);
+    return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] + 0.11);
 end
 
 function UnitXP_SP3_rightPlayer()
-    return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] - 0.5);
+    return UnitXP_SP3_setCameraHorizontalDisplacement(UnitXP_SP3_Addon["cameraHorizontalDisplacement"] - 0.11);
 end
 
 function UnitXP_SP3_raiseCameraHeight()
-    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] + 0.2);
+    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] + 0.11);
 end
 
 function UnitXP_SP3_lowerCameraHeight()
-    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.2);
+    return UnitXP_SP3_setCameraHeight(UnitXP_SP3_Addon["cameraHeight"] - 0.11);
 end
 
 function UnitXP_SP3_cameraPitchUp()
-    return UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"] + 0.02);
+    return UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"] + 0.011);
 end
 
 function UnitXP_SP3_cameraPitchDown()
-    return UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"] - 0.02);
+    return UnitXP_SP3_setCameraPitch(UnitXP_SP3_Addon["cameraPitch"] - 0.011);
 end
 
 local function UnitXP_SP3_reloadConfig()
@@ -302,6 +313,14 @@ local function UnitXP_SP3_reloadConfig()
     else
         UnitXP_SP3_setShowInCombatNameplatesNearPlayer("disable");
         xpsp3_checkButton_showInCombatNameplatesNearPlayer:SetChecked(false);
+    end
+
+    if UnitXP_SP3_Addon["weatherAlwaysClear"] then
+        UnitXP_SP3_setWeatherAlwaysClear("enable");
+        xpsp3_checkButton_weatherAlwaysClear:SetChecked(true);
+    else
+        UnitXP_SP3_setWeatherAlwaysClear("disable");
+        xpsp3_checkButton_weatherAlwaysClear:SetChecked(false);
     end
 
     for ev, v in pairs(UnitXP_SP3_Addon["notify_flashTaskbarIcon"]) do
@@ -428,6 +447,14 @@ function UnitXP_SP3_UI_OnClick(widget)
             end
         end
 
+        if string.find(widget:GetName(), "_weatherAlwaysClear") then
+            if widget:GetChecked() then
+                UnitXP_SP3_Addon["weatherAlwaysClear"] = true;
+            else
+                UnitXP_SP3_Addon["weatherAlwaysClear"] = false;
+            end
+        end
+
         if string.find(widget:GetName(), "_showInCombatNameplatesNearPlayer") then
             if widget:GetChecked() then
                 UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"] = true;
@@ -510,7 +537,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon" then
-        local dataVersion = 23;
+        local dataVersion = 24;
         if UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -525,6 +552,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["nameplateCombatFilter"] = false;
             UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"] = false;
             UnitXP_SP3_Addon["FPScap"] = 0;
+            UnitXP_SP3_Addon["weatherAlwaysClear"] = true;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;

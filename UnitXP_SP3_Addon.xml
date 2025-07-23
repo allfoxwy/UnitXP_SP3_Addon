@@ -62,7 +62,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 					</Anchor>
 				</Anchors>
 			</FontString>
-			<FontString inherits="GameFontNormal" text="Targeting functions could be accessed via Key Bindings Menu." justifyH="CENTER" justifyV="TOP">
+			<FontString inherits="GameFontNormal" text="Targeting functions could be accessed via Key Bindings Menu" justifyH="CENTER" justifyV="TOP">
 				<Size x="500" y="440" />
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="xpsp3Frame">
@@ -181,7 +181,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Other nameplates would disappear when a target is selected. Need Proper Nameplates Occlusion to be also enabled");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when a target is selected");
+				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -207,7 +208,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are raid marked. Need Proper Nameplates Occlusion to be also enabled");
+            	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are raid-marked");
+				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -233,7 +235,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("Aside from prioritized nameplates, only those in-combat/damaged/PvP-flagged nameplates would be shown. Need Proper Nameplates Occlusion to be also enabled");
+            	xpsp3tooltip:SetText("Aside from prioritized nameplates, only those in-combat/damaged/PvP-flagged nameplates would be shown");
+				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -259,7 +262,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				</OnClick>
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            	xpsp3tooltip:SetText("In-combat nameplates in small range would be shown regardless of occlusion. Need Proper Nameplates Occlusion to be also enabled");
+            	xpsp3tooltip:SetText("In-combat nameplates in small range would be shown regardless of occlusion");
+				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
             	xpsp3tooltip:Show()
           		</OnEnter>
           		<OnLeave>
@@ -285,7 +289,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 					</OnClick>
           <OnEnter>
             xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            xpsp3tooltip:SetText("Flash operating system's taskbar icon when game is in background but require attention");
+            xpsp3tooltip:SetText("Flash operating system's taskbar icon when the game requires attention");
+			xpsp3tooltip:AddLine("When the game is in background/minimized",1,1,1);
             xpsp3tooltip:Show()
           </OnEnter>
           <OnLeave>
@@ -311,7 +316,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 					</OnClick>
         			<OnEnter>
             			xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
-            			xpsp3tooltip:SetText("Play operating system's default sound when game is in background but require attention");
+            			xpsp3tooltip:SetText("Play operating system's default sound when the game requires attention");
+						xpsp3tooltip:AddLine("When the game is in background/minimized",1,1,1);
             			xpsp3tooltip:Show()
         			</OnEnter>
         			<OnLeave>
@@ -345,6 +351,34 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
+
+		<CheckButton name="xpsp3_checkButton_weatherAlwaysClear" inherits="UICheckButtonTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="274" y="-190"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+        		<OnLoad>
+            	getglobal(this:GetName().."Text"):SetText("Keep Weather Clear");
+          		</OnLoad>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+          		<OnEnter>
+            	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            	xpsp3tooltip:SetText("This would fix FPS-drop during bad weather at the cost of losing weather particles visual");
+				xpsp3tooltip:AddLine("Toggling the switch would influence the next weather event but not the current one",1,1,1);
+            	xpsp3tooltip:Show()
+          		</OnEnter>
+          		<OnLeave>
+            	xpsp3tooltip:Hide()
+          		</OnLeave>
+			</Scripts>
+		</CheckButton>
+
 
 		<EditBox name="xpsp3_editBox_FPScap" letters="3" autoFocus="false" numeric="true">
     		<Size x="100" y="32" />
@@ -380,7 +414,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
     		<Scripts>
         		<OnEditFocusGained>
            			xpsp3tooltip:SetOwner(this, "ANCHOR_LEFT");
-           			xpsp3tooltip:SetText("Limit frames-per-second. Zero means no limit.");
+           			xpsp3tooltip:SetText("Limit frames-per-second to the specific value");
+					xpsp3tooltip:AddLine("Zero means no limit",1,1,1);
            			xpsp3tooltip:Show();
        			</OnEditFocusGained>
        			<OnEditFocusLost>
