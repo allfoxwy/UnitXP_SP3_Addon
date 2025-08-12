@@ -537,7 +537,7 @@ end
 
 function UnitXP_SP3_OnEvent(event)
     if event == "ADDON_LOADED" and arg1 == "UnitXP_SP3_Addon" then
-        local dataVersion = 24;
+        local dataVersion = 25;
         if UnitXP_SP3_Addon == nil or UnitXP_SP3_Addon["dataVersion"] ~= dataVersion then
             UnitXP_SP3_Addon = {};
             UnitXP_SP3_Addon["dataVersion"] = dataVersion;
@@ -552,7 +552,7 @@ function UnitXP_SP3_OnEvent(event)
             UnitXP_SP3_Addon["nameplateCombatFilter"] = false;
             UnitXP_SP3_Addon["showInCombatNameplatesNearPlayer"] = false;
             UnitXP_SP3_Addon["FPScap"] = 0;
-            UnitXP_SP3_Addon["weatherAlwaysClear"] = true;
+            UnitXP_SP3_Addon["weatherAlwaysClear"] = false;
 
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"] = {};
             UnitXP_SP3_Addon["notify_flashTaskbarIcon"]["PLAYER_REGEN_DISABLED"] = true;
