@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
   <Frame name="xpsp3Frame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
 	<TitleRegion setAllPoints="true"/>
     <Size>
-		<AbsDimension x="500" y="355"/>
+		<AbsDimension x="500" y="385"/>
 	</Size>
     <Anchors>
 		<Anchor point="CENTER" relativeTo="UIParent" />
@@ -67,7 +67,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="xpsp3Frame">
 						<Offset>
-							<AbsDimension x="0" y="-300"/>
+							<AbsDimension x="0" y="-330"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -130,10 +130,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("Toggle visibility of the minimap button");
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -156,10 +156,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("Nameplates would also check camera's line of sight in addition to distance");
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -183,10 +183,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("Other nameplates would disappear when a target is selected");
 				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -210,10 +210,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("Other nameplates would disappear when some nameplates are raid-marked");
 				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -237,10 +237,37 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("Aside from prioritized nameplates, only those in-combat/damaged/PvP-flagged nameplates would be shown");
 				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
+          		</OnLeave>
+			</Scripts>
+		</CheckButton>
+
+		<CheckButton name="xpsp3_checkButton_hideCritterNameplate" inherits="UICheckButtonTemplate">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="24" y="-190"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+        		<OnLoad>
+            	getglobal(this:GetName().."Text"):SetText("Hide Critter Nameplates");
+          		</OnLoad>
+				<OnClick>
+					UnitXP_SP3_UI_OnClick(this);
+				</OnClick>
+          		<OnEnter>
+            	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
+            	xpsp3tooltip:SetText("Aside from prioritized nameplates, only those in-combat critters would have nameplates");
+				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
+            	xpsp3tooltip:Show();
+          		</OnEnter>
+          		<OnLeave>
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -249,7 +276,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
-						<AbsDimension x="24" y="-190"/>
+						<AbsDimension x="24" y="-220"/>
 					</Offset>
 				</Anchor>
 			</Anchors>
@@ -264,10 +291,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("In-combat nameplates in small range would be shown regardless of occlusion");
 				xpsp3tooltip:AddLine("Need Proper Nameplates Occlusion to be also enabled",1,1,1);
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -276,7 +303,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-230"/>
+							<AbsDimension x="24" y="-260"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -291,10 +318,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             xpsp3tooltip:SetText("Flash operating system's taskbar icon when the game requires attention");
 			xpsp3tooltip:AddLine("When the game is in background/minimized",1,1,1);
-            xpsp3tooltip:Show()
+            xpsp3tooltip:Show();
           </OnEnter>
           <OnLeave>
-            xpsp3tooltip:Hide()
+            xpsp3tooltip:Hide();
           </OnLeave>
 				</Scripts>
 		</CheckButton>
@@ -303,7 +330,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="24" y="-260"/>
+							<AbsDimension x="24" y="-290"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -318,10 +345,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             			xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             			xpsp3tooltip:SetText("Play operating system's default sound when the game requires attention");
 						xpsp3tooltip:AddLine("When the game is in background/minimized",1,1,1);
-            			xpsp3tooltip:Show()
+            			xpsp3tooltip:Show();
         			</OnEnter>
         			<OnLeave>
-            			xpsp3tooltip:Hide()
+            			xpsp3tooltip:Hide();
         			</OnLeave>
 				</Scripts>
 		</CheckButton>
@@ -344,10 +371,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
           		<OnEnter>
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("Camera would keep its height during shapeshifting");
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
@@ -371,10 +398,10 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interfac
             	xpsp3tooltip:SetOwner(this, "ANCHOR_RIGHT");
             	xpsp3tooltip:SetText("This would fix FPS-drop during bad weather at the cost of losing weather particles visual");
 				xpsp3tooltip:AddLine("Toggling the switch would influence the next weather event but not the current one",1,1,1);
-            	xpsp3tooltip:Show()
+            	xpsp3tooltip:Show();
           		</OnEnter>
           		<OnLeave>
-            	xpsp3tooltip:Hide()
+            	xpsp3tooltip:Hide();
           		</OnLeave>
 			</Scripts>
 		</CheckButton>
