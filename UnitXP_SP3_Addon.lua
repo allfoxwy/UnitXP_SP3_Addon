@@ -600,7 +600,6 @@ local function checkEvent(listenedEvents, actionFunction)
                 end
             end
         elseif event == "CHAT_MSG_ADDON" then
-            -- Turtle break their API by setting LFT_ADDON_PREFIX to nil in 1.18
             if arg1 == (LFT_ADDON_PREFIX or "TW_LFG") then
                 if string.find(arg2, "S2C_OFFER_NEW") or string.find(arg2, "S2C_ROLECHECK_START") or
                     string.find(arg2, "S2C_QUEUE_LEFT") then
